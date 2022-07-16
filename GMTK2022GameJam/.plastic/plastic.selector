@@ -1,0 +1,4 @@
+repository "GMTK2022GameJam"
+  path "/"
+    br "/main"
+    co "/main"
