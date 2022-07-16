@@ -20,6 +20,8 @@ public class Dice : MonoBehaviour
     public GameObject E;
     public GameObject W;
     public GameObject center;
+    
+    public Tilemap tilemap;
 
     private List<GameObject> diceFaces = new List<GameObject>();
     //private Rigidbody rb;
@@ -27,6 +29,10 @@ public class Dice : MonoBehaviour
     private int step = 10;
     private float speed = 0.01f;
     private float wait = 0.2f;
+
+    private Vector3 hori;
+    private Vector3 verti;
+    
 
     public static Face downFace = null;
     // Start is called before the first frame update
@@ -45,6 +51,8 @@ public class Dice : MonoBehaviour
         }
 
         //rb = GetComponent<Rigidbody>();
+        hori = new Vector3(GetComponent<MeshFilter>().mesh.bounds.size.x, 0, 0);
+        verti = new Vector3(0, 0, GetComponent<MeshFilter>().mesh.bounds.size.z);
     }
 
     // Update is called once per frame
@@ -73,25 +81,29 @@ public class Dice : MonoBehaviour
 
         if (!isRolling)
         {
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.UpArrow) 
+                && tilemap.HasTile(tilemap.WorldToCell(transform.position + verti)))
             {
                 StartCoroutine(moveUp());
                 isRolling = true;
             }
 
-            else if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKey(KeyCode.DownArrow)
+                     && tilemap.HasTile(tilemap.WorldToCell(transform.position - verti)))
             {
                 StartCoroutine(moveDown());
                 isRolling = true;
             }
 
-            else if (Input.GetKey(KeyCode.LeftArrow))
+            else if (Input.GetKey(KeyCode.LeftArrow)
+                     && tilemap.HasTile(tilemap.WorldToCell(transform.position - hori)))
             {
                 StartCoroutine(moveLeft());
                 isRolling = true;
             }
 
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.RightArrow)
+                     && tilemap.HasTile(tilemap.WorldToCell(transform.position + hori)))
             {
                 StartCoroutine(moveRight());
                 isRolling = true;

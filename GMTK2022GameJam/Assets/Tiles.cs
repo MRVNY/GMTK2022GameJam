@@ -13,7 +13,9 @@ public class Tiles : MonoBehaviour
     void Start()
     {
         tileMap = GetComponent<Tilemap>();
-        
+        tileMap.GetComponent<TilemapRenderer>().receiveShadows = true;
+        tileMap.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
         availablePlaces = new List<Vector3>();
  
         for (int n = tileMap.cellBounds.xMin; n < tileMap.cellBounds.xMax; n++)
@@ -41,7 +43,7 @@ public class Tiles : MonoBehaviour
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (Dice.downFace != null)
         {
-            tileMap.SetColor(tileMap.WorldToCell(Dice.downFace.transform.position-offset), Dice.downFace.color);
+            tileMap.SetColor(tileMap.WorldToCell(Dice.downFace.transform.position), Dice.downFace.color);
         }
     }
 }
