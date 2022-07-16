@@ -161,11 +161,6 @@ public class Dice : MonoBehaviour
     {
         var allCubes = transform.parent.GetComponentsInChildren<MeshRenderer>();
         var center = Vector3.zero;
-        foreach (var cube in allCubes)
-        {
-            center += cube.transform.position;
-        }
-        center /= allCubes.Length;
 
         float newN = Single.NegativeInfinity;
         float newS = Single.PositiveInfinity;
@@ -175,11 +170,15 @@ public class Dice : MonoBehaviour
         foreach (var cube in allCubes)
         {
             var position = cube.transform.position;
+            
+            center += position;
             newN = Mathf.Max(newN, position.z);
             newS = Mathf.Min(newS, position.z);
             newE = Mathf.Max(newE, position.x);
             newW = Mathf.Min(newW, position.x);
         }
+        
+        center /= allCubes.Length;
         
         N.transform.position = new Vector3(center.x, 0, newN);
         S.transform.position = new Vector3(center.x, 0, newS);
