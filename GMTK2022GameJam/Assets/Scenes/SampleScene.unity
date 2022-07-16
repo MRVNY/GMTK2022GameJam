@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 2163919}
   - component: {fileID: 2163918}
   - component: {fileID: 2163920}
+  - component: {fileID: 2163921}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -171,6 +172,19 @@ Transform:
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2163920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2163917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536e4fc254af8451f814990a0a5c6a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dice: {fileID: 1475334514}
+--- !u!114 &2163921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -744,7 +758,6 @@ GameObject:
   - component: {fileID: 965683006}
   - component: {fileID: 965683008}
   - component: {fileID: 965683007}
-  - component: {fileID: 965683009}
   m_Layer: 0
   m_Name: Lower
   m_TagString: Untagged
@@ -1020,19 +1033,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &965683009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965683005}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 536e4fc254af8451f814990a0a5c6a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dice: {fileID: 1475334514}
 --- !u!1 &996844566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,7 +1044,6 @@ GameObject:
   - component: {fileID: 996844567}
   - component: {fileID: 996844570}
   - component: {fileID: 996844569}
-  - component: {fileID: 996844568}
   m_Layer: 0
   m_Name: Upper
   m_TagString: Untagged
@@ -1067,19 +1066,6 @@ Transform:
   m_Father: {fileID: 2163919}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &996844568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996844566}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 536e4fc254af8451f814990a0a5c6a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dice: {fileID: 1475334514}
 --- !u!483693784 &996844569
 TilemapRenderer:
   m_ObjectHideFlags: 0
