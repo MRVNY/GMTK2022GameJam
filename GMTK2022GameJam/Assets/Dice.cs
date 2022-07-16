@@ -53,19 +53,8 @@ public class Dice : MonoBehaviour
         //rb = GetComponent<Rigidbody>();
         hori = new Vector3(GetComponent<MeshFilter>().mesh.bounds.size.x, 0, 0);
         verti = new Vector3(0, 0, GetComponent<MeshFilter>().mesh.bounds.size.z);
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        // foreach (var face in diceFaces)
-        // {
-        //     face.GetComponent<Renderer>().material.SetColor("_Color", new Color(
-        //         Random.Range(0f, 1f), 
-        //         Random.Range(0f, 1f), 
-        //         Random.Range(0f, 1f)
-        //     ));
-        // }
+        
+        recenter();
     }
 
     private void Update()
@@ -119,9 +108,9 @@ public class Dice : MonoBehaviour
             transform.RotateAround(N.transform.position, Vector3.right, step);
             yield return new WaitForSeconds(speed);
         }
-        center.transform.position = transform.position;
-
+        // center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
+        recenter();
         isRolling = false;
         downFace = null;
     }
@@ -133,8 +122,9 @@ public class Dice : MonoBehaviour
             transform.RotateAround(S.transform.position, Vector3.left, step);
             yield return new WaitForSeconds(speed);
         }
-        center.transform.position = transform.position;
+        // center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
+        recenter();
         isRolling = false;
         downFace = null;
     }
@@ -146,8 +136,9 @@ public class Dice : MonoBehaviour
             transform.RotateAround(W.transform.position, Vector3.forward, step);
             yield return new WaitForSeconds(speed);
         }
-        center.transform.position = transform.position;
+        // center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
+        recenter();
         isRolling = false;
         downFace = null;
     }
@@ -159,9 +150,40 @@ public class Dice : MonoBehaviour
             transform.RotateAround(E.transform.position, Vector3.back, step);
             yield return new WaitForSeconds(speed);
         }
-        center.transform.position = transform.position;
+        // center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
+        recenter();
         isRolling = false;
         downFace = null;
+    }
+
+    void recenter()
+    {
+        var allCubes = transform.parent.GetComponentsInChildren<MeshRenderer>();
+        var center = Vector3.zero;
+        foreach (var cube in allCubes)
+        {
+            center += cube.transform.position;
+        }
+        center /= allCubes.Length;
+
+        float newN = Single.NegativeInfinity;
+        float newS = Single.PositiveInfinity;
+        float newE = Single.NegativeInfinity;
+        float newW = Single.PositiveInfinity;
+        
+        foreach (var cube in allCubes)
+        {
+            var position = cube.transform.position;
+            newN = Mathf.Max(newN, position.z);
+            newS = Mathf.Min(newS, position.z);
+            newE = Mathf.Max(newE, position.x);
+            newW = Mathf.Min(newW, position.x);
+        }
+        
+        N.transform.position = new Vector3(center.x, 0, newN);
+        S.transform.position = new Vector3(center.x, 0, newS);
+        E.transform.position = new Vector3(newE, 0, center.z);
+        W.transform.position = new Vector3(newW, 0, center.z);
     }
 }
