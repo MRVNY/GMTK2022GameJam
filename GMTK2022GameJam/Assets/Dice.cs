@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class Dice : MonoBehaviour
@@ -27,8 +28,7 @@ public class Dice : MonoBehaviour
     private float speed = 0.01f;
     private float wait = 0.2f;
 
-    public GameObject downFace = null;
-
+    public static Face downFace = null;
     // Start is called before the first frame update
     void Start()
     {
