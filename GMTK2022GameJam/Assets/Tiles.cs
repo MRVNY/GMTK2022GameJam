@@ -41,15 +41,7 @@ public class Tiles : MonoBehaviour
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (Dice.downFace != null)
         {
-            foreach (var tile in availablePlaces)
-            { 
-                if(Vector3.Distance(tile + offset, Dice.downFace.transform.position) < 0.7f)
-                {
-                    // print(Vector3.Distance(tile, Dice.downFace.transform.position));
-                    // print(tile);
-                    tileMap.SetColor(tileMap.WorldToCell(tile), Dice.downFace.color);
-                }
-            }
+            tileMap.SetColor(tileMap.WorldToCell(Dice.downFace.transform.position-offset), Dice.downFace.color);
         }
     }
 }

@@ -70,7 +70,7 @@
       <updated>1657917416025</updated>
       <workItem from="1657917434272" duration="5004000" />
       <workItem from="1657971916813" duration="347000" />
-      <workItem from="1657985186401" duration="478000" />
+      <workItem from="1657985186401" duration="756000" />
     </task>
     <servers />
   </component>
@@ -81,24 +81,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Tiles.cs</url>
-          <line>47</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Tiles.cs" initialLine="47" containingFunctionPresentation="method 'UpdateTile'">
-            <startOffsets>
-              <option value="1344" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1410" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
