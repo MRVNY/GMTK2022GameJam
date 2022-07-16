@@ -25,7 +25,9 @@ public class Dice : MonoBehaviour
     private bool isRolling = false;
     private int step = 10;
     private float speed = 0.01f;
-    private float wait = 0.1f;
+    private float wait = 0.2f;
+
+    public GameObject downFace = null;
 
     // Start is called before the first frame update
     void Start()
@@ -109,7 +111,7 @@ public class Dice : MonoBehaviour
 
         yield return new WaitForSeconds(wait);
         isRolling = false;
-
+        downFace = null;
     }
     
     IEnumerator moveDown()
@@ -122,6 +124,7 @@ public class Dice : MonoBehaviour
         center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
         isRolling = false;
+        downFace = null;
     }
     
     IEnumerator moveLeft()
@@ -134,6 +137,7 @@ public class Dice : MonoBehaviour
         center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
         isRolling = false;
+        downFace = null;
     }
     
     IEnumerator moveRight()
@@ -146,5 +150,6 @@ public class Dice : MonoBehaviour
         center.transform.position = transform.position;
         yield return new WaitForSeconds(wait);
         isRolling = false;
+        downFace = null;
     }
 }
