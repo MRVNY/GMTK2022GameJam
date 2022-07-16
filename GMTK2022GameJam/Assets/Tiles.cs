@@ -21,12 +21,6 @@ public class Tiles : MonoBehaviour
         lower = tileMaps[1];
         Assert.IsTrue(upper.gameObject.name.Equals("Upper"));
 
-        upper.GetComponent<TilemapRenderer>().receiveShadows = true;
-        upper.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-
-        lower.GetComponent<TilemapRenderer>().receiveShadows = true;
-        lower.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-
         availablePlaces = new List<Vector3>();
  
         for (int n = lower.cellBounds.xMin; n < lower.cellBounds.xMax; n++)
@@ -48,7 +42,7 @@ public class Tiles : MonoBehaviour
         print(availablePlaces.Count);
     }
 
-    // Update is called once per frame
+
     public static void UpdateTile()
     {
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
@@ -57,21 +51,29 @@ public class Tiles : MonoBehaviour
             var tilePos = lower.WorldToCell(Dice.downFace.transform.position);
             var previousColor = lower.GetColor(tilePos);
             var goalColor = upper.GetColor(tilePos);
-            lower.SetColor(tilePos, Dice.downFace.color);
-            if(Color.Equals(previousColor, Dice.downFace.color)) // nothing has changed
+
+            if (Color.Equals(previousColor, Dice.downFace.color)) // nothing has changed
             {
                 return;
             }
-            else if (Color.Equals(Dice.downFace.color, goalColor)) // changed to good Color
+
+            lower.SetColor(tilePos, Dice.downFace.color);
+
+            if (Color.Equals(Dice.downFace.color, goalColor)) // changed to good Color
             {
                 validTiles++;
+
+                if(validTiles == availablePlaces.Count)
+                {
+                    Debug.Log("Success !!! The level is done my friend !");
+                }
             }
             else //the Color has changed from goal Color to a wrong Color
             {
                 validTiles--;
             }
-            Debug.Log(validTiles);
         }
 
     }
+
 }

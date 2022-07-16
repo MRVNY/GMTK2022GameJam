@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Lower
+  m_Name: GreenGoal
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 15cbb858b4fb644b5b3d26fc23285910, type: 3}
-  m_Color: {r: 1, g: 0.9079114, b: 0.8537736, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0da1bb885570a4b7bbe7277e04c9300c, type: 3}
+  m_Color: {r: 0.1839, g: 0.95, b: 0.3439, a: 1}
   m_Transform:
     e00: 1
     e01: 0
