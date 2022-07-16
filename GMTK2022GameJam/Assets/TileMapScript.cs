@@ -8,17 +8,16 @@ public class TileMapScript : MonoBehaviour
     public Tilemap tm;
     public Grid gr;
     public Vector3Int pos;
-    public Color color;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        tm.SetColor(pos,color);
+        tm.SetTileFlags(pos, TileFlags.None);
+        tm.SetColor(pos,Color.black);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("gr.cellSize "+gr.cellSize);
-        Debug.Log(tm.size);
+
     }
 }

@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridCell : MonoBehaviour
+public class GridCell
 {
-    // Start is called before the first frame update
-    void Start()
+    public Color ObjColor{ get; private set; }
+    public Color currColor { get; private set; }
+
+    public GridCell(Color objColor, Color currColor)
     {
-        
+        ObjColor = objColor;
+        this.currColor = currColor;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
