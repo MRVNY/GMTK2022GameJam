@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class GridCell
 {
-    public Color ObjColor{ get; private set; }
-    public Color currColor { get; private set; }
+    public Vector3Int pos { get; private set; }
+    public Color goalColor{ get; private set; }
+    public Color currColor { get; set; }
 
-    public GridCell(Color objColor, Color currColor)
+    public GridCell(Vector3Int pos, Color goalColor, Color currColor)
     {
-        ObjColor = objColor;
+        this.pos = pos;
+        this.goalColor = goalColor;
         this.currColor = currColor;
+    }
+
+    public bool IsGoalReached()
+    {
+        return goalColor.Equals(currColor);
     }
 
 

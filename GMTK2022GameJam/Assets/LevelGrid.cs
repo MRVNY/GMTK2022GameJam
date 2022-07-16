@@ -3,32 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
-public class LevelGrid : MonoBehaviour
+[CreateAssetMenu(fileName = "LevelGrid", menuName = "Custom")]
+public class LevelGrid : ScriptableObject
 {
 
     public GridCell[,] levelGrid { get; private set; }
     private float cellSize;
     [SerializeField]
-    private Tilemap tm;
-    // Start is called before the first frame update
-    void Start()
+    private Tilemap lower; //currentColor
+    private Tilemap upper; //goalColor
+
+    public void InitLevelGrid()
     {
-        var size = tm.size;
-        levelGrid = new GridCell[size.x,size.y]; 
-        for(int i = 0; i < size.x; i++)
+        var size = lower.size;
+        levelGrid = new GridCell[size.x, size.y];
+        for (int i = 0; i < size.x; i++)
         {
-            for(int j = 0; j < size.y; j++)
+            for (int j = 0; j < size.y; j++)
             {
-                levelGrid[i, j] = new GridCell(Color.white, tm.GetColor(new Vector3Int(i,j,0)));
-                Debug.Log(new Vector2(i,j)+" = "+levelGrid[i, j].currColor);
+                var pos = new Vector3Int(i, j, 0);
+                levelGrid[i, j] = new GridCell(pos, upper.GetColor(pos), lower.GetColor(pos));
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    public bool IsLevelDone()
     {
-        
+        foreach (GridCell cell in levelGrid)
+        {
+            if (!cell.IsGoalReached())
+            {
+                return false;    
+            }
+        }
+        return true;
     }
 }
