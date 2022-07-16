@@ -8,158 +8,115 @@ using Random = UnityEngine.Random;
 
 public class Dice : MonoBehaviour
 {
-    public GameObject up;
-    public GameObject down;
-    public GameObject left;
-    public GameObject right;
-    public GameObject front;
-    public GameObject back;
-
     public GameObject N;
     public GameObject S;
     public GameObject E;
     public GameObject W;
-    public GameObject center;
     
     public Tilemap tilemap;
+    protected Face[] diceFaces;
 
-    private List<GameObject> diceFaces = new List<GameObject>();
-    //private Rigidbody rb;
-    private bool isRolling = false;
-    private int step = 10;
-    private float speed = 0.01f;
-    private float wait = 0.2f;
+    protected bool isRolling = false;
+    protected int step = 10;
+    protected int blockStep = 3;
+    protected float speed = 0.01f;
+    protected float wait = 0.2f;
 
-    private Vector3 hori;
-    private Vector3 verti;
+    protected Vector3 hori;
+    protected Vector3 verti;
     
-
-    public static Face downFace = null;
+    public static List<Face> downFaces = new List<Face>();
+    
+    BoxCollider[] allCubes;
     // Start is called before the first frame update
     void Start()
     {
-        diceFaces.Add(up);
-        diceFaces.Add(down);
-        diceFaces.Add(left);
-        diceFaces.Add(right);
-        diceFaces.Add(front);
-        diceFaces.Add(back);
-
-        foreach (var face in diceFaces)
-        {
-            //face.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-        }
-
-        //rb = GetComponent<Rigidbody>();
+        diceFaces = GetComponentsInChildren<Face>();
+            
         hori = new Vector3(GetComponent<MeshFilter>().mesh.bounds.size.x, 0, 0);
         verti = new Vector3(0, 0, GetComponent<MeshFilter>().mesh.bounds.size.z);
         
+        allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
         recenter();
+        findDownFaces();
     }
 
     private void Update()
     {
-        // var hori = Input.GetAxis("Horizontal");
-        // var verti = Input.GetAxis("Vertical");
-        //
-        // if (hori != 0 || verti != 0)
-        // {
-        //     rb.AddForce(new Vector3(hori, 0, verti) * 10);
-        //     isRolling = true;
-        // }
-
         if (!isRolling)
         {
-            if (Input.GetKey(KeyCode.UpArrow) 
-                && tilemap.HasTile(tilemap.WorldToCell(transform.position + verti)))
+            if (Input.GetKey(KeyCode.UpArrow))
             {
-                StartCoroutine(moveUp());
+                if(tilemap.HasTile(tilemap.WorldToCell(transform.position + verti)))
+                    StartCoroutine(move(N.transform.position, Vector3.right));
+                else
+                    StartCoroutine(block(N.transform.position, Vector3.right));
                 isRolling = true;
             }
-
-            else if (Input.GetKey(KeyCode.DownArrow)
-                     && tilemap.HasTile(tilemap.WorldToCell(transform.position - verti)))
+            
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
-                StartCoroutine(moveDown());
+                if (tilemap.HasTile(tilemap.WorldToCell(transform.position - verti)))
+                    StartCoroutine(move(S.transform.position, Vector3.left));
+                else
+                    StartCoroutine(block(S.transform.position, Vector3.left));
                 isRolling = true;
             }
-
-            else if (Input.GetKey(KeyCode.LeftArrow)
-                     && tilemap.HasTile(tilemap.WorldToCell(transform.position - hori)))
+            
+            else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                StartCoroutine(moveLeft());
+                if (tilemap.HasTile(tilemap.WorldToCell(transform.position - hori)))
+                    StartCoroutine(move(W.transform.position, Vector3.forward));
+                else
+                    StartCoroutine(block(W.transform.position, Vector3.forward));
                 isRolling = true;
             }
-
-            else if (Input.GetKey(KeyCode.RightArrow)
-                     && tilemap.HasTile(tilemap.WorldToCell(transform.position + hori)))
+            
+            else if (Input.GetKey(KeyCode.RightArrow))
             {
-                StartCoroutine(moveRight());
+                if (tilemap.HasTile(tilemap.WorldToCell(transform.position + hori)))
+                    StartCoroutine(move(E.transform.position, Vector3.back));
+                else
+                    StartCoroutine(block(E.transform.position, Vector3.back));
                 isRolling = true;
             }
         }
-        //center.transform.position = transform.position;
     }
 
-    IEnumerator moveUp()
+    protected IEnumerator move(Vector3 point, Vector3 axis)
     {
         for (int i = 0; i < (90 / step); i++)
         {
-            transform.RotateAround(N.transform.position, Vector3.right, step);
+            transform.RotateAround(point, axis, step);
             yield return new WaitForSeconds(speed);
         }
-        // center.transform.position = transform.position;
+        
         yield return new WaitForSeconds(wait);
         recenter();
+        findDownFaces();
         isRolling = false;
-        downFace = null;
     }
     
-    IEnumerator moveDown()
+    protected IEnumerator block(Vector3 point, Vector3 axis)
     {
-        for (int i = 0; i < (90 / step); i++)
+        for(int i=0; i<blockStep; i++)
         {
-            transform.RotateAround(S.transform.position, Vector3.left, step);
+            transform.RotateAround(point, axis, step);
             yield return new WaitForSeconds(speed);
         }
-        // center.transform.position = transform.position;
-        yield return new WaitForSeconds(wait);
-        recenter();
-        isRolling = false;
-        downFace = null;
-    }
-    
-    IEnumerator moveLeft()
-    {
-        for (int i = 0; i < (90 / step); i++)
+        
+        for(int i=0; i<blockStep; i++)
         {
-            transform.RotateAround(W.transform.position, Vector3.forward, step);
+            transform.RotateAround(point, axis, -step);
             yield return new WaitForSeconds(speed);
         }
-        // center.transform.position = transform.position;
+
         yield return new WaitForSeconds(wait);
-        recenter();
         isRolling = false;
-        downFace = null;
-    }
-    
-    IEnumerator moveRight()
-    {
-        for (int i = 0; i < (90 / step); i++)
-        {
-            transform.RotateAround(E.transform.position, Vector3.back, step);
-            yield return new WaitForSeconds(speed);
-        }
-        // center.transform.position = transform.position;
-        yield return new WaitForSeconds(wait);
-        recenter();
-        isRolling = false;
-        downFace = null;
     }
 
-    void recenter()
+    protected void recenter()
     {
-        var allCubes = transform.parent.GetComponentsInChildren<MeshRenderer>();
         var center = Vector3.zero;
 
         float newN = Single.NegativeInfinity;
@@ -180,9 +137,18 @@ public class Dice : MonoBehaviour
         
         center /= allCubes.Length;
         
-        N.transform.position = new Vector3(center.x, 0, newN);
-        S.transform.position = new Vector3(center.x, 0, newS);
-        E.transform.position = new Vector3(newE, 0, center.z);
-        W.transform.position = new Vector3(newW, 0, center.z);
+        N.transform.position = new Vector3(center.x, 0, newN) + verti/2;
+        S.transform.position = new Vector3(center.x, 0, newS) - verti/2;
+        E.transform.position = new Vector3(newE, 0, center.z) + hori/2;
+        W.transform.position = new Vector3(newW, 0, center.z) - hori/2;
+    }
+
+    protected void findDownFaces()
+    {
+        downFaces.Clear();
+        foreach (var face in diceFaces)
+        {
+            face.AmIDownFace();
+        }
     }
 }

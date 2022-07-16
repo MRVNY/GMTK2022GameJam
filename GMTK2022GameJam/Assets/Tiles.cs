@@ -14,7 +14,7 @@ public class Tiles : MonoBehaviour
 
     private static int wrongTiles = 0;
     // Start is called before the first frame update
-    void Start()
+    public void OnEnable()
     {
         var tileMaps = GetComponentsInChildren<Tilemap>();
         goal = tileMaps[0];
@@ -37,37 +37,36 @@ public class Tiles : MonoBehaviour
                 }
             }
         }
-
-        UpdateTile();
+        
         wrongTiles=availablePlaces.Count;
-        print(availablePlaces.Count);
+        //print(availablePlaces.Count);
     }
 
 
-    public static void UpdateTile()
+    public static void UpdateTile(Face downFace)
     {
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
-        if (Dice.downFace != null)
+        if (downFace != null)
         {
-            //gerer le cas où on passe d'une non couleur a une mauvaise couleur
-            var tilePos = current.WorldToCell(Dice.downFace.transform.position);
+            //gerer le cas oï¿½ on passe d'une non couleur a une mauvaise couleur
+            var tilePos = current.WorldToCell(downFace.transform.position);
             var previousColor = current.GetColor(tilePos);
             var goalColor = goal.GetColor(tilePos);
 
-            if (ColorEquals(previousColor, Dice.downFace.color)) // nothing has changed
+            if (ColorEquals(previousColor, downFace.color)) // nothing has changed
             {
                 return;
             }
 
-            current.SetColor(tilePos, Dice.downFace.color);
-            if (!ColorEquals(previousColor, Dice.downFace.color)) // has changed 
+            current.SetColor(tilePos, downFace.color);
+            if (!ColorEquals(previousColor, downFace.color)) // has changed 
             {
-                if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, Dice.downFace.color)) //was valid before and is not valid now
+                if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
                     wrongTiles++;
                 }
-                else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, Dice.downFace.color)) //wasnt valid before and is valid now
+                else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
                     wrongTiles--;
@@ -95,7 +94,7 @@ public class Tiles : MonoBehaviour
 
     private static void OnWinEvent()
     {
-        Debug.Log("Success !!! The level is done my friend !");
+        print("Success !!! The level is done my friend !");
         new WaitForSeconds(5f);
         SceneManagerScript.LoadNextlevel();
     }
