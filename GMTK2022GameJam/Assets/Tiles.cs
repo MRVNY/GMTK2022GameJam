@@ -54,7 +54,7 @@ public class Tiles : MonoBehaviour
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (Dice.downFace != null)
         {
-            var tilePos = lower.WorldToCell(Dice.downFace.transform.position - offset);
+            var tilePos = lower.WorldToCell(Dice.downFace.transform.position);
             var previousColor = lower.GetColor(tilePos);
             var goalColor = upper.GetColor(tilePos);
             lower.SetColor(tilePos, Dice.downFace.color);
