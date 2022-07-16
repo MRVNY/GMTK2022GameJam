@@ -75,6 +75,8 @@ public class Tiles : MonoBehaviour
                     if (wrongTiles == 0)
                     {
                         Debug.Log("Success !!! The level is done my friend !");
+                        new WaitForSeconds(5f);
+                        SceneManagerScript.LoadNextlevel();
                     }
                 }
 
