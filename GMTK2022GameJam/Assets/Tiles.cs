@@ -21,6 +21,7 @@ public class Tiles : MonoBehaviour
             for (int p = tileMap.cellBounds.yMin; p < tileMap.cellBounds.yMax; p++)
             {
                 Vector3Int localPlace = (new Vector3Int(n, p, (int)tileMap.transform.position.y));
+                tileMap.SetTileFlags(localPlace, TileFlags.None);
                 Vector3 place = tileMap.CellToWorld(localPlace);
                 if (tileMap.HasTile(localPlace))
                 {
@@ -46,7 +47,6 @@ public class Tiles : MonoBehaviour
                 {
                     // print(Vector3.Distance(tile, Dice.downFace.transform.position));
                     // print(tile);
-                    tileMap.SetTileFlags(tileMap.WorldToCell(tile), TileFlags.None);
                     tileMap.SetColor(tileMap.WorldToCell(tile), Dice.downFace.color);
                 }
             }
