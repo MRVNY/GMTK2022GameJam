@@ -18,10 +18,20 @@ public class SceneManagerScript : MonoBehaviour
         {
             ReloadScene();
         }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            LoadNextlevel();
+        }
     }
 
     private void ReloadScene()
     {
-        Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+        Scene scene = SceneManager.GetActiveScene(); 
+        SceneManager.LoadScene(scene.name);
+    }
+
+    private void LoadNextlevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

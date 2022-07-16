@@ -6,39 +6,40 @@ using UnityEngine.Tilemaps;
 
 public class Tiles : MonoBehaviour
 {
-    public static Tilemap lower;
-    public static Tilemap upper;
+    public static Tilemap current;
+    public static Tilemap goal;
     public Dice dice;
 
     public static List<Vector3> availablePlaces;
 
-    private static int validTiles = 0;
+    private static int wrongTiles = 0;
     // Start is called before the first frame update
     void Start()
     {
         var tileMaps = GetComponentsInChildren<Tilemap>();
-        upper = tileMaps[0];
-        lower = tileMaps[1];
-        Assert.IsTrue(upper.gameObject.name.Equals("Upper"));
+        goal = tileMaps[0];
+        current = tileMaps[1];
+        Assert.IsTrue(goal.gameObject.name.Equals("Goal"));
 
         availablePlaces = new List<Vector3>();
  
-        for (int n = lower.cellBounds.xMin; n < lower.cellBounds.xMax; n++)
+        for (int n = current.cellBounds.xMin; n < current.cellBounds.xMax; n++)
         {
-            for (int p = lower.cellBounds.yMin; p < lower.cellBounds.yMax; p++)
+            for (int p = current.cellBounds.yMin; p < current.cellBounds.yMax; p++)
             {
-                Vector3Int localPlace = (new Vector3Int(n, p, (int)lower.transform.position.y));
-                lower.SetTileFlags(localPlace, TileFlags.None);
-                Vector3 place = lower.CellToWorld(localPlace);
-                if (lower.HasTile(localPlace))
+                Vector3Int localPlace = (new Vector3Int(n, p, (int)current.transform.position.y));
+                current.SetTileFlags(localPlace, TileFlags.None);
+                Vector3 place = current.CellToWorld(localPlace);
+                if (current.HasTile(localPlace))
                 {
                     //Tile at "place"
                     availablePlaces.Add(place);
                 }
             }
         }
-        
-        
+
+        UpdateTile();
+        wrongTiles=availablePlaces.Count;
         print(availablePlaces.Count);
     }
 
@@ -48,32 +49,47 @@ public class Tiles : MonoBehaviour
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (Dice.downFace != null)
         {
-            var tilePos = lower.WorldToCell(Dice.downFace.transform.position);
-            var previousColor = lower.GetColor(tilePos);
-            var goalColor = upper.GetColor(tilePos);
+            //gerer le cas où on passe d'une non couleur a une mauvaise couleur
+            var tilePos = current.WorldToCell(Dice.downFace.transform.position);
+            var previousColor = current.GetColor(tilePos);
+            var goalColor = goal.GetColor(tilePos);
 
-            if (Color.Equals(previousColor, Dice.downFace.color)) // nothing has changed
+            if (ColorEquals(previousColor, Dice.downFace.color)) // nothing has changed
             {
                 return;
             }
 
-            lower.SetColor(tilePos, Dice.downFace.color);
-
-            if (Color.Equals(Dice.downFace.color, goalColor)) // changed to good Color
+            current.SetColor(tilePos, Dice.downFace.color);
+            if (!ColorEquals(previousColor, Dice.downFace.color)) // has changed 
             {
-                validTiles++;
-
-                if(validTiles == availablePlaces.Count)
+                if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, Dice.downFace.color)) //was valid before and is not valid now
                 {
-                    Debug.Log("Success !!! The level is done my friend !");
+                    //Debug.Log("Wrong color association");
+                    wrongTiles++;
                 }
+                else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, Dice.downFace.color)) //wasnt valid before and is valid now
+                {
+                    //Debug.Log("Good color association");
+                    wrongTiles--;
+
+                    if (wrongTiles == 0)
+                    {
+                        Debug.Log("Success !!! The level is done my friend !");
+                    }
+                }
+
             }
-            else //the Color has changed from goal Color to a wrong Color
-            {
-                validTiles--;
-            }
+            //Debug.Log("wrongTiles = " + wrongTiles);
         }
 
     }
 
+    public static bool ColorEquals(Color a, Color b)
+    {
+        var eps = 0.1f;
+        /*Debug.Log(a.ToString());
+        Debug.Log(b.ToString());
+        Debug.Log(a.r + " , " + b.r + " , " + a.g + " , " + b.g + " , " + a.b + " , " + b.b + " , " + a.a + " , " + b.a);*/
+        return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
+    }
 }
