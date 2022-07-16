@@ -74,9 +74,7 @@ public class Tiles : MonoBehaviour
 
                     if (wrongTiles == 0)
                     {
-                        Debug.Log("Success !!! The level is done my friend !");
-                        new WaitForSeconds(5f);
-                        SceneManagerScript.LoadNextlevel();
+                        OnWinEvent();
                     }
                 }
 
@@ -93,5 +91,12 @@ public class Tiles : MonoBehaviour
         Debug.Log(b.ToString());
         Debug.Log(a.r + " , " + b.r + " , " + a.g + " , " + b.g + " , " + a.b + " , " + b.b + " , " + a.a + " , " + b.a);*/
         return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
+    }
+
+    private static void OnWinEvent()
+    {
+        Debug.Log("Success !!! The level is done my friend !");
+        new WaitForSeconds(5f);
+        SceneManagerScript.LoadNextlevel();
     }
 }
