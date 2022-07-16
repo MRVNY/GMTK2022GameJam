@@ -21,6 +21,12 @@ public class Tiles : MonoBehaviour
         lower = tileMaps[1];
         Assert.IsTrue(upper.gameObject.name.Equals("Upper"));
 
+        upper.GetComponent<TilemapRenderer>().receiveShadows = true;
+        upper.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        lower.GetComponent<TilemapRenderer>().receiveShadows = true;
+        lower.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
         availablePlaces = new List<Vector3>();
  
         for (int n = lower.cellBounds.xMin; n < lower.cellBounds.xMax; n++)
