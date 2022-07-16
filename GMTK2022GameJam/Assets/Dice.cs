@@ -25,6 +25,7 @@ public class Dice : MonoBehaviour
     private bool isRolling = false;
     private int step = 10;
     private float speed = 0.01f;
+    private float wait = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -76,19 +77,19 @@ public class Dice : MonoBehaviour
                 isRolling = true;
             }
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
                 StartCoroutine(moveDown());
                 isRolling = true;
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            else if (Input.GetKey(KeyCode.LeftArrow))
             {
                 StartCoroutine(moveLeft());
                 isRolling = true;
             }
 
-            if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.RightArrow))
             {
                 StartCoroutine(moveRight());
                 isRolling = true;
@@ -105,6 +106,8 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         center.transform.position = transform.position;
+
+        yield return new WaitForSeconds(wait);
         isRolling = false;
 
     }
@@ -117,6 +120,7 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         center.transform.position = transform.position;
+        yield return new WaitForSeconds(wait);
         isRolling = false;
     }
     
@@ -128,6 +132,7 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         center.transform.position = transform.position;
+        yield return new WaitForSeconds(wait);
         isRolling = false;
     }
     
@@ -139,6 +144,7 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         center.transform.position = transform.position;
+        yield return new WaitForSeconds(wait);
         isRolling = false;
     }
 }
