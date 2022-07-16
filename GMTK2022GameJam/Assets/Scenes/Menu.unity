@@ -426,7 +426,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiceAI
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8772777368221616009, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
 --- !u!1 &640691949 stripped
 GameObject:
@@ -450,11 +451,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7443f431deec54311a53a986c64b6740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  N: {fileID: 0}
-  S: {fileID: 0}
-  E: {fileID: 0}
-  W: {fileID: 0}
-  tilemap: {fileID: 0}
+  N: {fileID: 253228775}
+  S: {fileID: 431207197}
+  E: {fileID: 442640406}
+  W: {fileID: 1097162779}
+  tilemap: {fileID: 965683008}
 --- !u!1 &675174275
 GameObject:
   m_ObjectHideFlags: 0

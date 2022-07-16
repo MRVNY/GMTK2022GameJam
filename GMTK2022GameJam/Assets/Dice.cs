@@ -21,6 +21,7 @@ public class Dice : MonoBehaviour
     protected int blockStep = 3;
     protected float speed = 0.01f;
     protected float wait = 0.2f;
+    protected Dictionary<GameObject,Vector3> PointAxe = new Dictionary<GameObject, Vector3>();
 
     protected Vector3 hori;
     protected Vector3 verti;
@@ -29,9 +30,14 @@ public class Dice : MonoBehaviour
     
     BoxCollider[] allCubes;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         diceFaces = GetComponentsInChildren<Face>();
+        
+        PointAxe.Add(N,Vector3.right);
+        PointAxe.Add(S,Vector3.left);
+        PointAxe.Add(E,Vector3.back);
+        PointAxe.Add(W,Vector3.forward);
             
         hori = new Vector3(GetComponent<MeshFilter>().mesh.bounds.size.x, 0, 0);
         verti = new Vector3(0, 0, GetComponent<MeshFilter>().mesh.bounds.size.z);
@@ -48,46 +54,43 @@ public class Dice : MonoBehaviour
             if (Input.GetKey(KeyCode.UpArrow))
             {
                 if(tilemap.HasTile(tilemap.WorldToCell(transform.position + verti)))
-                    StartCoroutine(move(N.transform.position, Vector3.right));
+                    StartCoroutine(move(N));
                 else
-                    StartCoroutine(block(N.transform.position, Vector3.right));
-                isRolling = true;
+                    StartCoroutine(block(N));
             }
             
             else if (Input.GetKey(KeyCode.DownArrow))
             {
                 if (tilemap.HasTile(tilemap.WorldToCell(transform.position - verti)))
-                    StartCoroutine(move(S.transform.position, Vector3.left));
+                    StartCoroutine(move(S));
                 else
-                    StartCoroutine(block(S.transform.position, Vector3.left));
-                isRolling = true;
+                    StartCoroutine(block(S));
             }
             
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
                 if (tilemap.HasTile(tilemap.WorldToCell(transform.position - hori)))
-                    StartCoroutine(move(W.transform.position, Vector3.forward));
+                    StartCoroutine(move(W));
                 else
-                    StartCoroutine(block(W.transform.position, Vector3.forward));
-                isRolling = true;
+                    StartCoroutine(block(W));
             }
             
             else if (Input.GetKey(KeyCode.RightArrow))
             {
                 if (tilemap.HasTile(tilemap.WorldToCell(transform.position + hori)))
-                    StartCoroutine(move(E.transform.position, Vector3.back));
+                    StartCoroutine(move(E));
                 else
-                    StartCoroutine(block(E.transform.position, Vector3.back));
-                isRolling = true;
+                    StartCoroutine(block(E));
             }
         }
     }
 
-    protected IEnumerator move(Vector3 point, Vector3 axis)
+    protected IEnumerator move(GameObject point)
     {
+        isRolling = true;
         for (int i = 0; i < (90 / step); i++)
         {
-            transform.RotateAround(point, axis, step);
+            transform.RotateAround(point.transform.position, PointAxe[point], step);
             yield return new WaitForSeconds(speed);
         }
         
@@ -97,17 +100,18 @@ public class Dice : MonoBehaviour
         isRolling = false;
     }
     
-    protected IEnumerator block(Vector3 point, Vector3 axis)
+    protected IEnumerator block(GameObject point)
     {
+        isRolling = true;
         for(int i=0; i<blockStep; i++)
         {
-            transform.RotateAround(point, axis, step);
+            transform.RotateAround(point.transform.position, PointAxe[point], step);
             yield return new WaitForSeconds(speed);
         }
         
         for(int i=0; i<blockStep; i++)
         {
-            transform.RotateAround(point, axis, -step);
+            transform.RotateAround(point.transform.position, PointAxe[point], -step);
             yield return new WaitForSeconds(speed);
         }
 
