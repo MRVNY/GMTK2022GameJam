@@ -25,15 +25,16 @@ public class Map : MonoBehaviour
 
     IEnumerator Flip()
     {
-        yield return new WaitForSeconds(1f);
         Camera.main.orthographic = false;
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < 180; i++)
         {
             transform.RotateAround(transform.position, Vector3.left, 1);
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(1f);
-        Camera.main.orthographic = true;
+        //Camera.main.orthographic = true;
+        player.recenter();
         player.findDownFaces();
         ai.isRolling = false;
         player.isRolling = false;
