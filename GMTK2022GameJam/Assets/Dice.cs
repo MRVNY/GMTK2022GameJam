@@ -28,6 +28,9 @@ public class Dice : MonoBehaviour
     
     public static List<Face> downFaces = new List<Face>();
     public static Dice Instance { get; private set; }
+
+    private AudioSource audioSource;
+    public AudioClip moveSound;
     
     BoxCollider[] allCubes;
     // Start is called before the first frame update
@@ -38,7 +41,8 @@ public class Dice : MonoBehaviour
         {
             Instance = this;
         }
-        
+
+        audioSource = GetComponent<AudioSource>();
         diceFaces = GetComponentsInChildren<Face>();
         
         PointAxe.Add(N,Vector3.right);
@@ -94,6 +98,8 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator move(GameObject point)
     {
+        audioSource.clip = moveSound;
+        audioSource.Play();
         isRolling = true;
         for (int i = 0; i < (90 / step); i++)
         {

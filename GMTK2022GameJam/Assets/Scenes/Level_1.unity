@@ -925,6 +925,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8410874107882907860, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
   m_PrefabInstance: {fileID: 85668838740794569}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &2069992867 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6476895588141032789, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+  m_PrefabInstance: {fileID: 85668838740794569}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &85668838740794569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -940,6 +945,10 @@ PrefabInstance:
       propertyPath: tilemap
       value: 
       objectReference: {fileID: 965683008}
+    - target: {fileID: 85668837350493627, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 2069992867}
     - target: {fileID: 2578108218002383699, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
       propertyPath: m_Name
       value: Player
