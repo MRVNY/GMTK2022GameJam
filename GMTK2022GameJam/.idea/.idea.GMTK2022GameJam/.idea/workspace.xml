@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4e51053-655a-4e3e-99bc-ec55473ffb86" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/pngwing.com.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/pngwing.com.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/Palette.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tiles/Palette.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/Upper.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/Upper.asset.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +77,7 @@
       <workItem from="1657917434272" duration="5004000" />
       <workItem from="1657971916813" duration="347000" />
       <workItem from="1657985186401" duration="17887000" />
-      <workItem from="1658054151184" duration="2717000" />
+      <workItem from="1658054151184" duration="3348000" />
     </task>
     <servers />
   </component>
