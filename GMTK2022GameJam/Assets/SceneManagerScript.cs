@@ -45,10 +45,6 @@ public class SceneManagerScript : MonoBehaviour
         {
             ReloadScene();
         }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadNextlevel();
-        }
     }
 
     public  void ReloadScene()
@@ -63,6 +59,7 @@ public class SceneManagerScript : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Level_Sticky_1 4")
         {
+            Global.ended = true;
             SceneManager.LoadScene(0);
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
