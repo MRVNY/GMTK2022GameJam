@@ -109,6 +109,7 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator block(GameObject point)
     {
+        CameraMoveScript.Instance.diceIsBlocked = true;
         isRolling = true;
         for(int i=0; i<blockStep; i++)
         {
@@ -124,6 +125,7 @@ public class Dice : MonoBehaviour
 
         yield return new WaitForSeconds(wait);
         isRolling = false;
+        CameraMoveScript.Instance.diceIsBlocked = false;
     }
 
     public void recenter()
