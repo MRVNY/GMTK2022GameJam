@@ -34,6 +34,7 @@ public class Map : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
         Camera.main.orthographic = true;
+        player.findDownFaces();
         ai.isRolling = false;
         player.isRolling = false;
     }
