@@ -87,7 +87,7 @@ public class Tiles : MonoBehaviour
 
                     if (_wrongTiles == 0)
                     {
-                        OnWinEvent();
+                        SceneManagerScript.Instance.OnWinEvent();
                     }
                 }
 
@@ -105,18 +105,7 @@ public class Tiles : MonoBehaviour
         Debug.Log(a.r + " , " + b.r + " , " + a.g + " , " + b.g + " , " + a.b + " , " + b.b + " , " + a.a + " , " + b.a);*/
         return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
     }
+    
 
-    private void OnWinEvent()
-    {
-        print("Success !!! The level is done my friend !");
-        onWinUI.SetActive(true);
-        SceneManagerScript.IsGameOver = true;
-        StartCoroutine((LoadNextLevel()));
-    }
 
-    IEnumerator LoadNextLevel()
-    {
-        yield return new WaitForSeconds(10f);
-        SceneManagerScript.Instance.LoadNextlevel();
-    }
 }
