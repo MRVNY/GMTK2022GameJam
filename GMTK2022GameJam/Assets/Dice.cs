@@ -129,7 +129,8 @@ public class Dice : MonoBehaviour
 
         yield return new WaitForSeconds(wait);
         isRolling = false;
-        CameraMoveScript.Instance.diceIsBlocked = false;
+        if(CameraMoveScript.Instance!=null) 
+            CameraMoveScript.Instance.diceIsBlocked = false;
     }
 
     public void recenter()
