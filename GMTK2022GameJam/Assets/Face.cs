@@ -16,7 +16,7 @@ public class Face : MonoBehaviour
         if (Mathf.Abs(transform.rotation.eulerAngles.z-180)<10)
         {
             Dice.downFaces.Add(this);
-            Tiles.UpdateTile(this);
+            Tiles.Instance.UpdateTile(this);
         }
     }
 }

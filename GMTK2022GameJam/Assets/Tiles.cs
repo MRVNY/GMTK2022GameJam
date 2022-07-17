@@ -1,25 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 
 public class Tiles : MonoBehaviour
 {
+    public static Tiles Instance { get; private set; }
     public static Tilemap current;
     public static Tilemap goal;
     public Dice dice;
 
     public static List<Vector3> availablePlaces;
 
-    private static int wrongTiles = 0;
+    public GameObject onWinUI;
+    private static int _wrongTiles = 0;
     // Start is called before the first frame update
     public void OnEnable()
     {
+        if (Instance==null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            throw new InvalidImplementationException("You should not try to instantiate a singleton twice !");
+        }
         var tileMaps = GetComponentsInChildren<Tilemap>();
         goal = tileMaps[0];
-        current = tileMaps[1];
         Assert.IsTrue(goal.gameObject.name.Equals("Goal"));
+        current = tileMaps[1];
+        Assert.IsTrue(current.gameObject.name.Equals("Current"));
+
 
         availablePlaces = new List<Vector3>();
  
@@ -38,13 +51,14 @@ public class Tiles : MonoBehaviour
             }
         }
         
-        wrongTiles=availablePlaces.Count;
+        _wrongTiles=availablePlaces.Count;
         //print(availablePlaces.Count);
     }
 
 
-    public static void UpdateTile(Face downFace)
+    public void UpdateTile(Face downFace)
     {
+        
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (downFace != null)
         {
@@ -64,14 +78,14 @@ public class Tiles : MonoBehaviour
                 if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
-                    wrongTiles++;
+                    _wrongTiles++;
                 }
                 else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
-                    wrongTiles--;
+                    _wrongTiles--;
 
-                    if (wrongTiles == 0)
+                    if (_wrongTiles == 0)
                     {
                         OnWinEvent();
                     }
@@ -92,10 +106,17 @@ public class Tiles : MonoBehaviour
         return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
     }
 
-    private static void OnWinEvent()
+    private void OnWinEvent()
     {
         print("Success !!! The level is done my friend !");
-        new WaitForSeconds(5f);
-        SceneManagerScript.LoadNextlevel();
+        onWinUI.SetActive(true);
+        SceneManagerScript.IsGameOver = true;
+        StartCoroutine((LoadNextLevel()));
+    }
+
+    IEnumerator LoadNextLevel()
+    {
+        yield return new WaitForSeconds(10f);
+        SceneManagerScript.Instance.LoadNextlevel();
     }
 }
