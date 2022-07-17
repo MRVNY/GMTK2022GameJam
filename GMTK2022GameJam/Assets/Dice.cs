@@ -8,10 +8,12 @@ using Random = UnityEngine.Random;
 
 public class Dice : MonoBehaviour
 {
+    public Vector3 center;
     public GameObject N;
     public GameObject S;
     public GameObject E;
     public GameObject W;
+    private float height;
     
     public Tilemap tilemap;
     protected Face[] diceFaces;
@@ -60,7 +62,7 @@ public class Dice : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if(tilemap.HasTile(tilemap.WorldToCell(transform.position + verti)))
+                if(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f))))
                     StartCoroutine(move(N));
                 else
                     StartCoroutine(block(N));
@@ -68,7 +70,7 @@ public class Dice : MonoBehaviour
             
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(transform.position - verti)))
+                if (tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f))))
                     StartCoroutine(move(S));
                 else
                     StartCoroutine(block(S));
@@ -76,7 +78,7 @@ public class Dice : MonoBehaviour
             
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(transform.position - hori)))
+                if (tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f))))
                     StartCoroutine(move(W));
                 else
                     StartCoroutine(block(W));
@@ -84,7 +86,7 @@ public class Dice : MonoBehaviour
             
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(transform.position + hori)))
+                if (tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f))))
                     StartCoroutine(move(E));
                 else
                     StartCoroutine(block(E));
@@ -128,13 +130,16 @@ public class Dice : MonoBehaviour
 
     public void recenter()
     {
-        var center = Vector3.zero;
+        center = Vector3.zero;
 
         float newN = Single.NegativeInfinity;
         float newS = Single.PositiveInfinity;
         float newE = Single.NegativeInfinity;
         float newW = Single.PositiveInfinity;
+        float UP = Single.NegativeInfinity;
+        float DOWN = Single.PositiveInfinity;
         
+
         foreach (var cube in allCubes)
         {
             var position = cube.transform.position;
@@ -144,6 +149,8 @@ public class Dice : MonoBehaviour
             newS = Mathf.Min(newS, position.z);
             newE = Mathf.Max(newE, position.x);
             newW = Mathf.Min(newW, position.x);
+            UP = Mathf.Max(UP, position.y);
+            DOWN = Mathf.Min(DOWN, position.y);
         }
         
         center /= allCubes.Length;
@@ -152,6 +159,7 @@ public class Dice : MonoBehaviour
         S.transform.position = new Vector3(center.x, 0, newS) - verti/2;
         E.transform.position = new Vector3(newE, 0, center.z) + hori/2;
         W.transform.position = new Vector3(newW, 0, center.z) - hori/2;
+        height = (int)((UP - DOWN) / hori.x) + 1;
     }
 
     public void findDownFaces()

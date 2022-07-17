@@ -793,3 +793,4 @@ MonoBehaviour:
   E: {fileID: 0}
   W: {fileID: 0}
   tilemap: {fileID: 0}
+  isRolling: 0
