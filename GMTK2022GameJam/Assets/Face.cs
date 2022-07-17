@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,4 +21,14 @@ public class Face : MonoBehaviour
             Tiles.Instance.UpdateTile(this);
         }
     }
+
+    private void OnTriggerStay(Collider col)
+    {
+        if (!Dice.Instance.isRolling)
+        {
+            Dice.Instance.stick(col);
+        }
+    }
+    
+    
 }
