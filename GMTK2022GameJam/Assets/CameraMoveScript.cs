@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraMoveScript : MonoBehaviour
 {
     public Transform movingDice;
-
     void Update()
     {
         Vector3 newPos = new()

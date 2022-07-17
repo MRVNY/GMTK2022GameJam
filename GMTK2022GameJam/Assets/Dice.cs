@@ -99,7 +99,7 @@ public class Dice : MonoBehaviour
         findDownFaces();
         isRolling = false;
     }
-    
+
     protected IEnumerator block(GameObject point)
     {
         isRolling = true;
