@@ -20,6 +20,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Face.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Map.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Tiles.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -74,7 +75,7 @@
       <updated>1657917416025</updated>
       <workItem from="1657917434272" duration="5004000" />
       <workItem from="1657971916813" duration="347000" />
-      <workItem from="1657985186401" duration="13347000" />
+      <workItem from="1657985186401" duration="17887000" />
     </task>
     <servers />
   </component>

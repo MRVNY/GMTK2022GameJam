@@ -860,9 +860,21 @@ PrefabInstance:
       propertyPath: tilemap
       value: 
       objectReference: {fileID: 965683008}
+    - target: {fileID: 449706433889476403, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2578108218002383699, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268662559236794941, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268662559236794941, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5662552756647750051, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
       propertyPath: m_RootOrder
