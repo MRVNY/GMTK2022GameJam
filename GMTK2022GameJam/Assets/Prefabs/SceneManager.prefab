@@ -49,6 +49,7 @@ MonoBehaviour:
   resetInstructionsUI: {fileID: 6432019726454666819}
   diceAdviceUI: {fileID: 1668697449021496554}
   levelDoneUI: {fileID: 2595611515182528970}
+  startUI: {fileID: 2727951588850133306}
 --- !u!1001 &1643360299705999588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,6 +164,11 @@ GameObject:
 --- !u!4 &2595611516195064908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3660042863276518568, guid: 494a0d2940707f74387ab740df303a81, type: 3}
+  m_PrefabInstance: {fileID: 1643360299705999588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2727951588850133306 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3681062641325525470, guid: 494a0d2940707f74387ab740df303a81, type: 3}
   m_PrefabInstance: {fileID: 1643360299705999588}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5444920871517558812 stripped

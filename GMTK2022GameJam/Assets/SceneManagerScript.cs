@@ -14,6 +14,8 @@ public class SceneManagerScript : MonoBehaviour
     private GameObject diceAdviceUI;
     [SerializeField]
     private GameObject levelDoneUI;
+    [SerializeField]
+    private GameObject startUI;
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
@@ -87,12 +89,13 @@ public class SceneManagerScript : MonoBehaviour
 
     private void CleanUI()
     {
+        startUI.SetActive(false);
         resetInstructionsUI.SetActive(false);
         moveInstructionsUI.SetActive(false);
         diceAdviceUI.SetActive(false);
         levelDoneUI.SetActive(false);
     }
-    IEnumerator LoadNextLevelWithDelay(float delay)
+    public IEnumerator LoadNextLevelWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManagerScript.Instance.LoadNextlevel();
