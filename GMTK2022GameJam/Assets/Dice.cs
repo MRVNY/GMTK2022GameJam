@@ -16,7 +16,7 @@ public class Dice : MonoBehaviour
     public Tilemap tilemap;
     protected Face[] diceFaces;
 
-    protected bool isRolling = false;
+    public bool isRolling = false;
     protected int step = 10;
     protected int blockStep = 3;
     protected float speed = 0.01f;
