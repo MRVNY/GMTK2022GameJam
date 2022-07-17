@@ -17,7 +17,7 @@ public class Face : MonoBehaviour
             && Mathf.Abs(transform.position.y) < 0.1f)
         {
             Dice.downFaces.Add(this);
-            Tiles.UpdateTile(this);
+            Tiles.Instance.UpdateTile(this);
         }
     }
 }
