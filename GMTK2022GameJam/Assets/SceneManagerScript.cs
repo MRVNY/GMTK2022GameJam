@@ -9,6 +9,8 @@ public class SceneManagerScript : MonoBehaviour
     [SerializeField]
     private GameObject moveInstructionsUI;
     [SerializeField]
+    private GameObject resetInstructionsUI;
+    [SerializeField]
     private GameObject diceAdviceUI;
     [SerializeField]
     private GameObject levelDoneUI;
@@ -66,6 +68,9 @@ public class SceneManagerScript : MonoBehaviour
             case "Level_2":
                 diceAdviceUI.SetActive(true);
                 break;
+            case "Level_3":
+                resetInstructionsUI.SetActive(true);
+                break;
             default:
                 break;
         }
@@ -82,6 +87,7 @@ public class SceneManagerScript : MonoBehaviour
 
     private void CleanUI()
     {
+        resetInstructionsUI.SetActive(false);
         moveInstructionsUI.SetActive(false);
         diceAdviceUI.SetActive(false);
         levelDoneUI.SetActive(false);
