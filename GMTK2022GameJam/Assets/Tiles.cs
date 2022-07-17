@@ -12,7 +12,7 @@ public class Tiles : MonoBehaviour
     public static Tilemap goal;
     public Dice dice;
 
-    public static List<Vector3> availablePlaces;
+    private List<Vector3> availablePlaces;
 
     public GameObject onWinUI;
     private static int _wrongTiles = 0;
@@ -43,7 +43,7 @@ public class Tiles : MonoBehaviour
                 Vector3Int localPlace = (new Vector3Int(n, p, (int)current.transform.position.y));
                 current.SetTileFlags(localPlace, TileFlags.None);
                 Vector3 place = current.CellToWorld(localPlace);
-                if (current.HasTile(localPlace))
+                if (goal.HasTile(localPlace))
                 {
                     //Tile at "place"
                     availablePlaces.Add(place);
