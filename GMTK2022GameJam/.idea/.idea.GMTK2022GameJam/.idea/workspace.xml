@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4e51053-655a-4e3e-99bc-ec55473ffb86" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/CameraMoveScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CameraMoveScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Dice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Dice.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GMTK2022GameJam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GMTK2022GameJam/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level_11.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level_11.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level_9.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level_9.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +78,7 @@
       <workItem from="1657971916813" duration="347000" />
       <workItem from="1657985186401" duration="17887000" />
       <workItem from="1658054151184" duration="3350000" />
-      <workItem from="1658060079899" duration="3625000" />
+      <workItem from="1658060079899" duration="4219000" />
     </task>
     <servers />
   </component>

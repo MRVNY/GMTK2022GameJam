@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44031042, g: 0.48887503, b: 0.5690443, a: 1}
+  m_IndirectSpecularColor: {r: 0.44031098, g: 0.48887533, b: 0.56904453, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2443,7 +2443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1654205502
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2685,6 +2685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveInstructionsUI: {fileID: 0}
+  resetInstructionsUI: {fileID: 0}
   diceAdviceUI: {fileID: 0}
   levelDoneUI: {fileID: 0}
 --- !u!4 &1713299845
