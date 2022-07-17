@@ -111,7 +111,9 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator block(GameObject point)
     {
-        CameraMoveScript.Instance.diceIsBlocked = true;
+        if(CameraMoveScript.Instance!=null) 
+            CameraMoveScript.Instance.diceIsBlocked = true;
+        
         isRolling = true;
         for(int i=0; i<blockStep; i++)
         {
