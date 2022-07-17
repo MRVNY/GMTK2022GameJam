@@ -184,7 +184,6 @@ public class Dice : MonoBehaviour
 
     public void stick(Collider col)
     {
-        col.enabled = false;
         col.transform.SetParent(transform);
         allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
         diceFaces = GetComponentsInChildren<Face>();
