@@ -117,6 +117,7 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator block(GameObject point)
     {
+        print(height);
         if(CameraMoveScript.Instance!=null) 
             CameraMoveScript.Instance.diceIsBlocked = true;
         
