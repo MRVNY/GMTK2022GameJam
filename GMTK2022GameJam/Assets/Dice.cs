@@ -27,11 +27,18 @@ public class Dice : MonoBehaviour
     protected Vector3 verti;
     
     public static List<Face> downFaces = new List<Face>();
+    public static Dice Instance { get; private set; }
     
     BoxCollider[] allCubes;
     // Start is called before the first frame update
     protected void Start()
     {
+        
+        if (Instance==null)
+        {
+            Instance = this;
+        }
+        
         diceFaces = GetComponentsInChildren<Face>();
         
         PointAxe.Add(N,Vector3.right);
@@ -119,7 +126,7 @@ public class Dice : MonoBehaviour
         isRolling = false;
     }
 
-    protected void recenter()
+    public void recenter()
     {
         var center = Vector3.zero;
 
@@ -154,5 +161,15 @@ public class Dice : MonoBehaviour
         {
             face.AmIDownFace();
         }
+    }
+
+    public void stick(Collider col)
+    {
+        col.enabled = false;
+        col.transform.SetParent(transform);
+        allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
+        diceFaces = GetComponentsInChildren<Face>();
+        recenter();
+        findDownFaces();
     }
 }
