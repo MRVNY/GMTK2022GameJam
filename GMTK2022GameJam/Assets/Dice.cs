@@ -147,7 +147,7 @@ public class Dice : MonoBehaviour
         W.transform.position = new Vector3(newW, 0, center.z) - hori/2;
     }
 
-    protected void findDownFaces()
+    public void findDownFaces()
     {
         downFaces.Clear();
         foreach (var face in diceFaces)
