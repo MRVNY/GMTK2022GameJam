@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -36,6 +37,9 @@ public class Dice : MonoBehaviour
     
     BoxCollider[] allCubes;
     // Start is called before the first frame update
+
+    protected Vector3 mouseStart;
+    protected float mouseClick;
     protected void Start()
     {
         
@@ -60,40 +64,136 @@ public class Dice : MonoBehaviour
         findDownFaces();
     }
 
+    private void OnMouseDown()
+    {
+    }
+
+    private void OnMouseUp()
+    {
+        if(Time.time - mouseClick < 0.5f) SceneManagerScript.Instance.ReloadScene();
+        
+        Vector3 dir = Input.mousePosition - mouseStart;
+        if(dir != Vector3.zero)
+        {
+            if(Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+            {
+                if(dir.x > 0)
+                {
+                    if (tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f))))
+                        StartCoroutine(move(W));
+                    else
+                        StartCoroutine(block(W));
+                }
+                else
+                {
+                    if (tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f))))
+                        StartCoroutine(move(E));
+                    else
+                        StartCoroutine(block(E));
+                }
+            }
+            else
+            {
+                if(dir.y > 0)
+                {
+                    if (tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f))))
+                        StartCoroutine(move(S));
+                    else
+                        StartCoroutine(block(S));
+                }
+                else
+                {
+                    if(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f))))
+                        StartCoroutine(move(N));
+                    else
+                        StartCoroutine(block(N));
+                }
+            }
+        }
+        dir = Vector3.zero;
+    }
+
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if(Time.time - mouseClick < 0.5f) SceneManagerScript.Instance.ReloadScene();
+            mouseStart = Input.mousePosition;
+            mouseClick = Time.time;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Vector3 dir = Input.mousePosition - mouseStart;
+            if(dir.magnitude > 50)
+            {
+                if(Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+                {
+                    if(dir.x < 0)
+                    {
+                        StartCoroutine(
+                            tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f)))
+                                ? move(W)
+                                : block(W));
+                    }
+                    else
+                    {
+                        StartCoroutine(
+                            tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f)))
+                                ? move(E)
+                                : block(E));
+                    }
+                }
+                else
+                {
+                    if(dir.y < 0)
+                    {
+                        StartCoroutine(
+                            tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f)))
+                                ? move(S)
+                                : block(S));
+                    }
+                    else
+                    {
+                        StartCoroutine(
+                            tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f)))
+                                ? move(N)
+                                : block(N));
+                    }
+                }
+            }
+            dir = Vector3.zero;
+        }
+        
+        
         if (!isRolling)
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f))))
-                    StartCoroutine(move(N));
-                else
-                    StartCoroutine(block(N));
+                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f)))
+                    ? move(N)
+                    : block(N));
             }
             
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f))))
-                    StartCoroutine(move(S));
-                else
-                    StartCoroutine(block(S));
+                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f)))
+                    ? move(S)
+                    : block(S));
             }
             
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f))))
-                    StartCoroutine(move(W));
-                else
-                    StartCoroutine(block(W));
+                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f)))
+                    ? move(W)
+                    : block(W));
             }
             
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                if (tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f))))
-                    StartCoroutine(move(E));
-                else
-                    StartCoroutine(block(E));
+                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f)))
+                    ? move(E)
+                    : block(E));
             }
         }
     }
@@ -117,7 +217,6 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator block(GameObject point)
     {
-        print(height);
         if(CameraMoveScript.Instance!=null) 
             CameraMoveScript.Instance.diceIsBlocked = true;
         
@@ -171,7 +270,7 @@ public class Dice : MonoBehaviour
         S.transform.position = new Vector3(center.x, 0, newS) - verti/2;
         E.transform.position = new Vector3(newE, 0, center.z) + hori/2;
         W.transform.position = new Vector3(newW, 0, center.z) - hori/2;
-        height = (int)((UP - DOWN) / hori.x) + 1;
+        height = ((UP - DOWN) / hori.x) + 1;
     }
 
     public void findDownFaces()

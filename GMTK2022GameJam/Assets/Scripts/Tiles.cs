@@ -10,11 +10,9 @@ public class Tiles : MonoBehaviour
     public static Tiles Instance { get; private set; }
     public static Tilemap current;
     public static Tilemap goal;
-    public Dice dice;
 
     private List<Vector3> availablePlaces;
 
-    public GameObject onWinUI;
     private static int _wrongTiles = 0;
     // Start is called before the first frame update
     public void OnEnable()
@@ -73,7 +71,7 @@ public class Tiles : MonoBehaviour
             }
 
             current.SetColor(tilePos, downFace.color);
-            if (!ColorEquals(previousColor, downFace.color)) // has changed 
+            if (previousColor!=Color.white && !ColorEquals( previousColor, downFace.color)) // has changed 
             {
                 if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
                 {
@@ -90,9 +88,8 @@ public class Tiles : MonoBehaviour
                         SceneManagerScript.Instance.OnWinEvent();
                     }
                 }
-
             }
-            //Debug.Log("wrongTiles = " + wrongTiles);
+            //Debug.Log("wrongTiles = " + _wrongTiles);
         }
 
     }

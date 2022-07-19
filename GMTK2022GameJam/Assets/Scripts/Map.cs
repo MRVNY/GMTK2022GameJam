@@ -18,7 +18,6 @@ public class Map : MonoBehaviour
 
     public GameObject canvas;
 
-    public GameObject triger;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +44,6 @@ public class Map : MonoBehaviour
         Welcome.SetActive(false);
         Credit.SetActive(true);
         Thank.SetActive(false);
-        triger.SetActive(false);
         StartCoroutine(DoubleFlip());
     }
 
@@ -66,8 +64,10 @@ public class Map : MonoBehaviour
     
     IEnumerator DoubleFlip()
     {
-        ai.gameObject.SetActive(false);
+        ai.isRolling = true;
+        ai.enabled = false;
         player.isRolling = true;
+        player.enabled = false;
         canvas.SetActive(false);
         
         yield return new WaitForSeconds(1f);
@@ -83,9 +83,16 @@ public class Map : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(1f);
+        
+        canvas.SetActive(true);
+
         player.recenter();
         player.findDownFaces();
+        
+        ai.enabled = true;
         ai.isRolling = false;
+        
+        player.enabled = true;
         player.isRolling = false;
         
         Welcome.SetActive(true);

@@ -57,7 +57,7 @@ public class SceneManagerScript : MonoBehaviour
     {
         IsGameOver = false;
 
-        if (SceneManager.GetActiveScene().name == "Level_Sticky_1 4")
+        if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings -1)
         {
             Global.ended = true;
             SceneManager.LoadScene(0);
@@ -90,7 +90,7 @@ public class SceneManagerScript : MonoBehaviour
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
         IsGameOver = true;
-        StartCoroutine((LoadNextLevelWithDelay(10f)));
+        StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
 
     private void CleanUI()
