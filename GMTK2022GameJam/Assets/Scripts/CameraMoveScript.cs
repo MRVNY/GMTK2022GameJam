@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraMoveScript : MonoBehaviour
@@ -18,7 +17,6 @@ public class CameraMoveScript : MonoBehaviour
         }
         else
         {
-            throw new InvalidImplementationException("You should not try to instantiate a singleton twice !");
         }
 
     }

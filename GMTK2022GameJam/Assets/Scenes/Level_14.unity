@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44031098, g: 0.48887533, b: 0.56904453, a: 1}
+  m_IndirectSpecularColor: {r: 0.44031042, g: 0.48887503, b: 0.5690443, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -182,8 +182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536e4fc254af8451f814990a0a5c6a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dice: {fileID: 0}
-  onWinUI: {fileID: 0}
 --- !u!1001 &84067304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -266,6 +264,14 @@ PrefabInstance:
     - target: {fileID: 5662552756647750051, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061542971275972687, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061542971275972687, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b15127ba24a804046841b59261bfdb8d, type: 3}
@@ -446,7 +452,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965683005}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.77, y: 0, z: -0.69}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1312,7 +1318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996844566}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 0, z: -0.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children: []

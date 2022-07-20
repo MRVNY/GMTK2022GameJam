@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,7 +27,6 @@ public class SceneManagerScript : MonoBehaviour
         }
         else
         {
-            throw new InvalidImplementationException("You should not try to instantiate a singleton twice !");
         }
 
         LevelSpecificEvents();

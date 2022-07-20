@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -23,7 +22,6 @@ public class Tiles : MonoBehaviour
         }
         else
         {
-            throw new InvalidImplementationException("You should not try to instantiate a singleton twice !");
         }
         var tileMaps = GetComponentsInChildren<Tilemap>();
         goal = tileMaps[0];
