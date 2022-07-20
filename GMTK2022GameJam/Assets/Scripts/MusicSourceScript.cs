@@ -15,7 +15,7 @@ public class MusicSourceScript : MonoBehaviour
         }
         else
         {
-            return;
+            Destroy(gameObject);
             //throw new InvalidImplementationException("You should not try to instantiate a singleton twice !");
         }
         audioSource = GetComponent<AudioSource>();

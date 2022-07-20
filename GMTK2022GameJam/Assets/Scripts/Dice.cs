@@ -117,12 +117,12 @@ public class Dice : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if(Time.time - mouseClick < 0.5f) SceneManagerScript.Instance.ReloadScene();
+            if(Time.time - mouseClick < 0.2f) SceneManagerScript.Instance.ReloadScene();
             mouseStart = Input.mousePosition;
             mouseClick = Time.time;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (!isRolling && Input.GetMouseButtonUp(0))
         {
             Vector3 dir = Input.mousePosition - mouseStart;
             if(dir.magnitude > 50)
