@@ -8,7 +8,7 @@ public class StartTriggerScript : MonoBehaviour
      private void OnTriggerEnter(Collider other)
      {
          Debug.Log("start triggered");
-         StartCoroutine(SceneManagerScript.Instance.LoadNextLevelWithDelay(2f));
+         StartCoroutine(SceneManagerScript.Instance.LoadLevelWithDelay(0,2f));
      }
  
 }

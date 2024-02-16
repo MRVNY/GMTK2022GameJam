@@ -8,7 +8,7 @@ public class CreditsTriggerScript : MonoBehaviour
     public Map map;
 
     private bool detect = true;
-    // Start is called before the first frame update
+
     private void OnTriggerEnter(Collider other)
     {
         if (detect)
