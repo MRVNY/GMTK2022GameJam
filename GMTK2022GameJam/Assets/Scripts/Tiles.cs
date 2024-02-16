@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -13,9 +14,6 @@ public class Tiles : MonoBehaviour
     private List<Vector3> availablePlaces;
 
     private static int _wrongTiles = 0;
-    
-    public GameObject StarsEffect;
-    public GameObject SmokeEffect;
     // Start is called before the first frame update
     public void OnEnable()
     {
@@ -23,9 +21,7 @@ public class Tiles : MonoBehaviour
         {
             Instance = this;
         }
-        else
-        {
-        }
+        
         var tileMaps = GetComponentsInChildren<Tilemap>();
         goal = tileMaps[0];
         Assert.IsTrue(goal.gameObject.name.Equals("Goal"));
@@ -108,7 +104,7 @@ public class Tiles : MonoBehaviour
 
     IEnumerator SuccessEffect(Face face)
     {
-        GameObject effect = Instantiate(StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        GameObject effect = Instantiate(Dice.Instance.StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
         ParticleSystem.MainModule PSMain = effect.GetComponent<ParticleSystem>().main;
         PSMain.startColor = new ParticleSystem.MinMaxGradient(face.color);
         
@@ -118,7 +114,7 @@ public class Tiles : MonoBehaviour
     
     IEnumerator FailEffect(Face face)
     {
-        GameObject effect = Instantiate(SmokeEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        GameObject effect = Instantiate(Dice.Instance.StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
         
         yield return new WaitForSeconds(1); 
         Destroy(effect);

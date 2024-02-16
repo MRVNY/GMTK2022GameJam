@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class Dice : MonoBehaviour
 {
-    public Vector3 center;
+    private Vector3 center;
     public GameObject N;
     public GameObject S;
     public GameObject E;
@@ -27,6 +27,8 @@ public class Dice : MonoBehaviour
     protected Vector3 verti;
     
     public static List<Face> downFaces = new List<Face>();
+    public GameObject StarsEffect;
+    public GameObject SmokeEffect;
     public static Dice Instance { get; private set; }
 
     private AudioSource audioSource;
