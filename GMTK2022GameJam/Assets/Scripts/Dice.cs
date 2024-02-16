@@ -206,9 +206,11 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         
-        yield return new WaitForSeconds(wait);
         recenter();
         findDownFaces();
+        
+        yield return new WaitForSeconds(wait);
+        
         isRolling = false;
     }
 

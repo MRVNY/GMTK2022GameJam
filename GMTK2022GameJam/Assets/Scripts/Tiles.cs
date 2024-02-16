@@ -13,6 +13,9 @@ public class Tiles : MonoBehaviour
     private List<Vector3> availablePlaces;
 
     private static int _wrongTiles = 0;
+    
+    public GameObject StarsEffect;
+    public GameObject SmokeEffect;
     // Start is called before the first frame update
     public void OnEnable()
     {
@@ -74,11 +77,13 @@ public class Tiles : MonoBehaviour
                 if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
+                    // if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                     _wrongTiles++;
                 }
                 else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
+                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(SuccessEffect(downFace));
                     _wrongTiles--;
 
                     if (_wrongTiles == 0)
@@ -100,7 +105,24 @@ public class Tiles : MonoBehaviour
         Debug.Log(a.r + " , " + b.r + " , " + a.g + " , " + b.g + " , " + a.b + " , " + b.b + " , " + a.a + " , " + b.a);*/
         return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
     }
+
+    IEnumerator SuccessEffect(Face face)
+    {
+        GameObject effect = Instantiate(StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        ParticleSystem.MainModule PSMain = effect.GetComponent<ParticleSystem>().main;
+        PSMain.startColor = new ParticleSystem.MinMaxGradient(face.color);
+        
+        yield return new WaitForSeconds(1); 
+        Destroy(effect);
+    }
     
+    IEnumerator FailEffect(Face face)
+    {
+        GameObject effect = Instantiate(SmokeEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        
+        yield return new WaitForSeconds(1); 
+        Destroy(effect);
+    }
 
 
 }
