@@ -48,6 +48,12 @@ public class Tiles : MonoBehaviour
         
         _wrongTiles=availablePlaces.Count;
         //print(availablePlaces.Count);
+        
+        current.GetComponent<TilemapRenderer>().receiveShadows = true;
+        current.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        goal.GetComponent<TilemapRenderer>().receiveShadows = true;
+        goal.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
     }
 
 
@@ -73,7 +79,7 @@ public class Tiles : MonoBehaviour
                 if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
-                    // if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
+                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                     _wrongTiles++;
                 }
                 else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, downFace.color)) //wasnt valid before and is valid now
@@ -114,7 +120,7 @@ public class Tiles : MonoBehaviour
     
     IEnumerator FailEffect(Face face)
     {
-        GameObject effect = Instantiate(Dice.Instance.StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        GameObject effect = Instantiate(Dice.Instance.SmokeEffect, face.transform.position, Quaternion.Euler(90,0,0));
         
         yield return new WaitForSeconds(1); 
         Destroy(effect);

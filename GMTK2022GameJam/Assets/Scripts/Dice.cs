@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
 public class Dice : MonoBehaviour
 {
     private Vector3 center;
-    public GameObject N;
-    public GameObject S;
-    public GameObject E;
-    public GameObject W;
+    public GameObject N,S,E,W;
     private float height;
+    private RotateData[] rotateData;
+    public RotateData currentRotation;
+    private int UP=0, RIGHT=1, DOWN=2, LEFT=3;
     
     public Tilemap tilemap;
     protected Face[] diceFaces;
@@ -25,6 +24,8 @@ public class Dice : MonoBehaviour
 
     protected Vector3 hori;
     protected Vector3 verti;
+    protected GameObject targetDir;
+    protected Dictionary<GameObject,Vector3> blockCheck = new Dictionary<GameObject, Vector3>();
     
     public static List<Face> downFaces = new List<Face>();
     public GameObject StarsEffect;
@@ -46,74 +47,41 @@ public class Dice : MonoBehaviour
         {
             Instance = this;
         }
+        
+        rotateData = new RotateData[4]
+        {
+            new RotateData{direction = "N", perspectiveOffset = new Vector3(2,0,-2), controlScheme = new GameObject[]{N,E,S,W}}, 
+            new RotateData{direction = "E", perspectiveOffset = new Vector3(-2,0,-2), controlScheme = new GameObject[]{E,S,W,N}},
+            new RotateData{direction = "S", perspectiveOffset = new Vector3(-2,0,2), controlScheme = new GameObject[]{S,W,N,E}},
+            new RotateData{direction = "W", perspectiveOffset = new Vector3(2,0,2), controlScheme = new GameObject[]{W,N,E,S}}
+        };
+        
+        currentRotation = rotateData[0];
 
         audioSource = GetComponent<AudioSource>();
         diceFaces = GetComponentsInChildren<Face>();
         
         PointAxe.Add(N,Vector3.right);
-        PointAxe.Add(S,Vector3.left);
         PointAxe.Add(E,Vector3.back);
+        PointAxe.Add(S,Vector3.left);
         PointAxe.Add(W,Vector3.forward);
             
         hori = new Vector3(GetComponent<MeshFilter>().mesh.bounds.size.x, 0, 0);
         verti = new Vector3(0, 0, GetComponent<MeshFilter>().mesh.bounds.size.z);
+
+        blockCheck.Add(N, verti);
+        blockCheck.Add(S, -verti);
+        blockCheck.Add(E, hori);
+        blockCheck.Add(W, -hori);
         
         allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
         recenter();
         findDownFaces();
     }
-
-    private void OnMouseDown()
-    {
-    }
-
-    private void OnMouseUp()
-    {
-        if(Time.time - mouseClick < 0.5f) SceneManagerScript.Instance.ReloadScene();
-        
-        Vector3 dir = Input.mousePosition - mouseStart;
-        if(dir != Vector3.zero)
-        {
-            if(Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
-            {
-                if(dir.x > 0)
-                {
-                    if (tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f))))
-                        StartCoroutine(move(W));
-                    else
-                        StartCoroutine(block(W));
-                }
-                else
-                {
-                    if (tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f))))
-                        StartCoroutine(move(E));
-                    else
-                        StartCoroutine(block(E));
-                }
-            }
-            else
-            {
-                if(dir.y > 0)
-                {
-                    if (tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f))))
-                        StartCoroutine(move(S));
-                    else
-                        StartCoroutine(block(S));
-                }
-                else
-                {
-                    if(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f))))
-                        StartCoroutine(move(N));
-                    else
-                        StartCoroutine(block(N));
-                }
-            }
-        }
-        dir = Vector3.zero;
-    }
-
+    
     private void Update()
     {
+        //Mouse controls
         if (Input.GetMouseButtonDown(0))
         {
             if(Time.time - mouseClick < 0.2f) SceneManagerScript.Instance.ReloadScene();
@@ -128,72 +96,36 @@ public class Dice : MonoBehaviour
             {
                 if(Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
                 {
-                    if(dir.x < 0)
-                    {
-                        StartCoroutine(
-                            tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f)))
-                                ? move(W)
-                                : block(W));
-                    }
-                    else
-                    {
-                        StartCoroutine(
-                            tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f)))
-                                ? move(E)
-                                : block(E));
-                    }
+                    if(dir.x < 0) targetDir = currentRotation.controlScheme[LEFT];
+                    else targetDir = currentRotation.controlScheme[RIGHT];
                 }
                 else
                 {
-                    if(dir.y < 0)
-                    {
-                        StartCoroutine(
-                            tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f)))
-                                ? move(S)
-                                : block(S));
-                    }
-                    else
-                    {
-                        StartCoroutine(
-                            tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f)))
-                                ? move(N)
-                                : block(N));
-                    }
+                    if(dir.y < 0) targetDir = currentRotation.controlScheme[DOWN];
+                    else targetDir = currentRotation.controlScheme[UP];
                 }
+                StartCoroutine(
+                    tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
+                        ? move(targetDir)
+                        : block(targetDir));
             }
             dir = Vector3.zero;
         }
         
-        
+        //Keyboard controls
         if (!isRolling)
         {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(N.transform.position + verti * (height - 0.5f)))
-                    ? move(N)
-                    : block(N));
-            }
+            if (Input.GetKey(KeyCode.UpArrow)) targetDir = currentRotation.controlScheme[UP];
+            else if (Input.GetKey(KeyCode.RightArrow)) targetDir = currentRotation.controlScheme[RIGHT];
+            else if (Input.GetKey(KeyCode.DownArrow)) targetDir = currentRotation.controlScheme[DOWN];
+            else if (Input.GetKey(KeyCode.LeftArrow)) targetDir = currentRotation.controlScheme[LEFT];
+            else targetDir = null;
             
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(S.transform.position - verti * (height - 0.5f)))
-                    ? move(S)
-                    : block(S));
-            }
-            
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(W.transform.position - hori * (height - 0.5f)))
-                    ? move(W)
-                    : block(W));
-            }
-            
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                StartCoroutine(tilemap.HasTile(tilemap.WorldToCell(E.transform.position + hori * (height - 0.5f)))
-                    ? move(E)
-                    : block(E));
-            }
+            if(targetDir!=null)
+                StartCoroutine(
+                    tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
+                        ? move(targetDir)
+                        : block(targetDir));
         }
     }
 
@@ -291,4 +223,16 @@ public class Dice : MonoBehaviour
         recenter();
         findDownFaces();
     }
+    
+    public void RotateCamera(int direction)
+    {
+        currentRotation = rotateData[(Array.IndexOf(rotateData, currentRotation)+direction+4)%4];
+    }
+}
+
+public struct RotateData
+{
+    public string direction;
+    public Vector3 perspectiveOffset;
+    public GameObject[] controlScheme;
 }
