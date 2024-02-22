@@ -16,7 +16,7 @@ public class SceneManagerScript : MonoBehaviour
     [SerializeField]
     private GameObject startUI;
 
-    private int _firstLevelSceneIndex = 2;
+    private int _firstLevelBuildIndex = 6;
     private int _levelSelectorSceneIndex = 1;
     public static SceneManagerScript Instance { get; private set; }
 
@@ -33,7 +33,6 @@ public class SceneManagerScript : MonoBehaviour
             Debug.LogWarning("Two instances of singletin SceneManagerScript.cs script were created. \nDestroying this instance");
             Destroy(this.gameObject);
         }
-
         LevelSpecificEvents();
     }
 
@@ -49,21 +48,18 @@ public class SceneManagerScript : MonoBehaviour
             ReloadScene();
         }
     }
-
     public  void ReloadScene()
     {
         Scene scene = SceneManager.GetActiveScene(); 
         SceneManager.LoadScene(scene.name);
     }
-
-
     public void LoadLevelSelectorScene()
     {
         SceneManager.LoadScene(_levelSelectorSceneIndex);
     }
     public void LoadLevel(int levelId)
     {
-        SceneManager.LoadScene(_firstLevelSceneIndex+levelId);
+        SceneManager.LoadScene(_firstLevelBuildIndex + levelId);
     }
 
 
@@ -130,6 +126,12 @@ public class SceneManagerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(0);
+    }
+
+    public IEnumerator LoadSceneWithDelay(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
     }
     public IEnumerator LoadLevelSelectorSceneWithDelay(float delay)
     {

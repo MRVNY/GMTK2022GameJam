@@ -1403,7 +1403,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1486,7 +1486,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1684,7 +1684,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4746,10 +4746,10 @@ Tilemap:
   - first: {x: -3, y: -2, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 1
+      m_TileIndex: 2
       m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
-      m_TileColorIndex: 2
+      m_TileColorIndex: 1
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
@@ -4766,10 +4766,10 @@ Tilemap:
   - first: {x: -1, y: 0, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
+      m_TileIndex: 0
       m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
-      m_TileColorIndex: 1
+      m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
@@ -4785,12 +4785,12 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 01bfaaa607d227c49bccf358a0d638b0, type: 2}
   - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: 01bfaaa607d227c49bccf358a0d638b0, type: 2}
+  - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: ad411a89a55708044992f628b425cae7, type: 2}
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 193cf01eb8cb94f589ed7d1e8c503f6a, type: 2}
+    m_Data: {fileID: 11400000, guid: 8d571fb8fa37b0d48a627b7b38254208, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -4818,11 +4818,11 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 1
+  - m_RefCount: 2
     m_Data: {r: 0.96862745, g: 1, b: 0.23921569, a: 1}
   - m_RefCount: 1
-    m_Data: {r: 1, g: 0.37254903, b: 0.37254903, a: 1}
-  - m_RefCount: 2
+    m_Data: {r: 0.33333334, g: 1, b: 0.9372549, a: 1}
+  - m_RefCount: 1
     m_Data: {r: 0.38039216, g: 1, b: 0.5019608, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -4984,8 +4984,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1643360299225847543, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: firstLevelSceneName
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643360299225847543, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: firstLevelSceneIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643360299225847543, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: _firstLevelBuildIndex
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5211,7 +5219,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6082,7 +6090,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6165,7 +6173,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cbe3472b36c995a48a4a25307a1aa940, type: 2}
+  - {fileID: 2100000, guid: 388e9e784cb428340bbd13595959e019, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7547,7 +7555,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686677748}
   serializedVersion: 2
-  m_LocalRotation: {x: -1, y: 0, z: 0, w: 0}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7558,7 +7566,7 @@ Transform:
   - {fileID: 1162069911}
   - {fileID: 864091906}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!114 &1686677750
 MonoBehaviour:
   m_ObjectHideFlags: 0
