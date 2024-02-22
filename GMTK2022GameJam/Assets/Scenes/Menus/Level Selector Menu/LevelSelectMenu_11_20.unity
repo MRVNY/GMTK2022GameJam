@@ -4460,7 +4460,7 @@ GameObject:
   - component: {fileID: 1454878555}
   - component: {fileID: 1454878554}
   m_Layer: 0
-  m_Name: Test LevelSelectMenu
+  m_Name: Lock Level Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4473,7 +4473,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454878553}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42363f8429c428144bc7a5fe7daa3192, type: 3}
   m_Name: 
@@ -4483,7 +4483,8 @@ MonoBehaviour:
   current: {fileID: 965683008}
   goal: {fileID: 996844570}
   testDebugTile: {fileID: 11400000, guid: ffaba4e811866f34a959fa93177e7211, type: 2}
-  maxLevelAvailable: 0
+  maxLevelAvailable: 11
+  firstTriggerLevelId: 10
 --- !u!4 &1454878555
 Transform:
   m_ObjectHideFlags: 0
