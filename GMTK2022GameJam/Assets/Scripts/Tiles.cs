@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -21,7 +22,7 @@ public class Tiles : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Two instances of singletin Tiles.cs script were created. \nDestroying this instance");
+            Debug.LogWarning("Two instances of singleton Tiles.cs script were created. \nDestroying this instance");
             Destroy(this.gameObject);
         }
         var tileMaps = GetComponentsInChildren<Tilemap>();
@@ -50,6 +51,12 @@ public class Tiles : MonoBehaviour
         
         _wrongTiles=availablePlaces.Count;
         //print(availablePlaces.Count);
+
+        _current.GetComponent<TilemapRenderer>().receiveShadows = true;
+        _current.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        _goal.GetComponent<TilemapRenderer>().receiveShadows = true;
+        _goal.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
     }
 
 
@@ -75,11 +82,13 @@ public class Tiles : MonoBehaviour
                 if (ColorEquals(previousColor, _goalColor) && !ColorEquals(_goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
+                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                     _wrongTiles++;
                 }
                 else if (!ColorEquals(previousColor, _goalColor) && ColorEquals(_goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
+                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(SuccessEffect(downFace));
                     _wrongTiles--;
 
                     if (_wrongTiles == 0)
@@ -101,7 +110,24 @@ public class Tiles : MonoBehaviour
         Debug.Log(a.r + " , " + b.r + " , " + a.g + " , " + b.g + " , " + a.b + " , " + b.b + " , " + a.a + " , " + b.a);*/
         return (Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.a)) < eps;
     }
+
+    IEnumerator SuccessEffect(Face face)
+    {
+        GameObject effect = Instantiate(Dice.Instance.StarsEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        ParticleSystem.MainModule PSMain = effect.GetComponent<ParticleSystem>().main;
+        PSMain.startColor = new ParticleSystem.MinMaxGradient(face.color);
+        
+        yield return new WaitForSeconds(1); 
+        Destroy(effect);
+    }
     
+    IEnumerator FailEffect(Face face)
+    {
+        GameObject effect = Instantiate(Dice.Instance.SmokeEffect, face.transform.position, Quaternion.Euler(90,0,0));
+        
+        yield return new WaitForSeconds(1); 
+        Destroy(effect);
+    }
 
 
 }

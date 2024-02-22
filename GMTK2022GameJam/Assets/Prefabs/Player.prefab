@@ -843,8 +843,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4668095425588602305}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.9554315, y: 11.181704, z: 0.9804672}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -884,7 +884,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -921,8 +921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11a5132a939cfc4f89b9c6eaf723d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingDice: {fileID: 6061542971275972687}
   diceIsBlocked: 0
+  isOrthographic: 1
 --- !u!1 &6869464542873373429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,13 +1048,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e880eab14b124c8c8be5e69bbd94874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: 0, y: 0, z: 0}
   N: {fileID: 695830005570158301}
   S: {fileID: 8616089557385760820}
   E: {fileID: 4549559159869531881}
   W: {fileID: 9204055107401604969}
   tilemap: {fileID: 0}
   isRolling: 0
+  StarsEffect: {fileID: 4977614735912570434, guid: 825c39b46ca8b40d780240d7c9b12b57, type: 3}
+  SmokeEffect: {fileID: 1642322455942316, guid: fdefb6da92c7449ebb5e39c21cbbd2b1, type: 3}
   moveSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
 --- !u!82 &6476895588141032789
 AudioSource:
