@@ -131,6 +131,8 @@ public class Dice : MonoBehaviour
 
     protected IEnumerator move(GameObject point)
     {
+        //Debug.Log("Bouge");
+        DiceEventSystem.DiceMoved();
         audioSource.clip = moveSound;
         audioSource.Play();
         isRolling = true;
@@ -146,6 +148,7 @@ public class Dice : MonoBehaviour
         yield return new WaitForSeconds(wait);
         
         isRolling = false;
+        
     }
 
     protected IEnumerator block(GameObject point)

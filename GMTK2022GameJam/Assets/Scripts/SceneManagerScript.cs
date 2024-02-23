@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class SceneManagerScript : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class SceneManagerScript : MonoBehaviour
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
+
+    [SerializeField] private TextMeshProUGUI frontNbMove;
+    [SerializeField] private TextMeshProUGUI middleNbMove;
+    [SerializeField] private TextMeshProUGUI backNbMove;
+    [SerializeField] private string nbOfMovementsVirginText;
+    private int nbOfMovements;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +38,9 @@ public class SceneManagerScript : MonoBehaviour
         }
 
         LevelSpecificEvents();
+
+        nbOfMovements = 0;
+        DiceEventSystem.TriggerDiceMove += ListenToDiceMoving;
     }
 
     // Update is called once per frame
@@ -87,6 +98,7 @@ public class SceneManagerScript : MonoBehaviour
         CleanUI();
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
+        DisplayNumberOfMovement();
         IsGameOver = true;
         StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
@@ -103,5 +115,23 @@ public class SceneManagerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManagerScript.Instance.LoadNextlevel();
+    }
+
+    private void ListenToDiceMoving()
+    {
+        nbOfMovements++;
+    }
+
+    private void DisplayNumberOfMovement()
+    {
+        string textFiller = nbOfMovementsVirginText + " " + nbOfMovements;
+        backNbMove.text = textFiller;
+        frontNbMove.text = textFiller;
+        middleNbMove.text = textFiller;
+    }
+
+    private void OnDestroy()
+    {
+        DiceEventSystem.TriggerDiceMove -= ListenToDiceMoving;
     }
 }
