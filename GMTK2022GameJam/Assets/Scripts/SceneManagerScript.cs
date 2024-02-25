@@ -16,8 +16,9 @@ public class SceneManagerScript : MonoBehaviour
     [SerializeField]
     private GameObject startUI;
 
-    private int _firstLevelBuildIndex = 6;
-    private int _levelSelectorSceneIndex = 1;
+    private const int _firstLevelBuildIndex = 6;
+    private const int _levelSelectorSceneIndex = 1;
+    private const string maxCompletedLevelVarName = "maxCompletedLevel";
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
@@ -100,9 +101,27 @@ public class SceneManagerScript : MonoBehaviour
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
         IsGameOver = true;
+
+        int levelId = GetCurrentLevelId();
+        UpdateMaxLevelCompletedId(levelId); 
         StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
 
+
+    //can be called in a level to know which is this level rank in the game progression ( first,second,tenth,etc... )
+    public int GetCurrentLevelId()
+    {
+        print("this is level : " + (SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex));
+        return SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex;
+    }
+    public int GetMaxLevelCompletedId()
+    {
+        return PlayerPrefs.GetInt(maxCompletedLevelVarName,-1);
+    }
+    public void UpdateMaxLevelCompletedId(int completedLevelId)
+    {
+        PlayerPrefs.SetInt(maxCompletedLevelVarName, completedLevelId);
+    }
     private void CleanUI()
     {
         startUI.SetActive(false);

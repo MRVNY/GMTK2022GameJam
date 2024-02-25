@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class Tiles : MonoBehaviour
 {
+
     public static Tiles Instance { get; private set; }
     private Tilemap _current;
     private Tilemap _goal;

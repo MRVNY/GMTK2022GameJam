@@ -15,6 +15,7 @@ public class LevelSelectMenu : MonoBehaviour
     [SerializeField]
     private int firstTriggerLevelId = 0;
 
+    private int _maxLevelIdAvailable;
     private Vector3Int levelCenterTilePos;
     private int offsetFromCenterToFirst = 3;
     private void Start()
@@ -25,7 +26,8 @@ public class LevelSelectMenu : MonoBehaviour
 
         print(levelCenterTilePos);
 
-        
+        _maxLevelIdAvailable = SceneManagerScript.Instance.GetMaxLevelCompletedId() +1;
+        print("_maxLevelIdAvailable " + _maxLevelIdAvailable);
         BoundsInt bounds = current.cellBounds;
         for (int x = current.cellBounds.min.x; x< current.cellBounds.max.x; x++)
         {
@@ -33,7 +35,7 @@ public class LevelSelectMenu : MonoBehaviour
             {
                 if(current.GetTile(new Vector3Int(x, y, 0)) != null)
                 {
-                    int levelLockValue = maxLevelAvailable < firstTriggerLevelId ? -1 : maxLevelAvailable - firstTriggerLevelId;
+                    int levelLockValue = _maxLevelIdAvailable < firstTriggerLevelId ? -1 : _maxLevelIdAvailable - firstTriggerLevelId;
                     if (y >= offsetFromCenterToFirst + levelCenterTilePos.y + levelLockValue)
                     {
                         current.SetTile(new Vector3Int(x, y, 0), null);
