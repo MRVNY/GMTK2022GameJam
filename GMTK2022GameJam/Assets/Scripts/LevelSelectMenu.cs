@@ -10,7 +10,6 @@ public class LevelSelectMenu : MonoBehaviour
     [SerializeField] private Tilemap current;
     [SerializeField] private Tilemap goal;
     [SerializeField] private Tile testDebugTile;
-    [SerializeField] private int maxLevelAvailable;
 
     [SerializeField]
     private int firstTriggerLevelId = 0;
