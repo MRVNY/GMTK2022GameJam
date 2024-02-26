@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelSelectTrigger : MonoBehaviour
@@ -18,6 +19,35 @@ public class LevelSelectTrigger : MonoBehaviour
 
     [SerializeField]
     private Vector3 offset;
+
+    [SerializeField]
+    private RectTransform uiBestScore;
+
+    [SerializeField]
+    private List<TMP_Text> scoreTexts;
+
+    [SerializeField]
+    private bool uiOnLeftSide;
+
+    private void Start()
+    {
+        if (levelId > SceneManagerScript.Instance.GetMaxLevelCompletedId() + 1)
+        {
+            return;
+        }
+        uiBestScore.gameObject.SetActive(true);
+        foreach (var txt in scoreTexts) 
+        {
+            txt.text = "Done in " + "???" + " moves";
+        }
+        if (levelId % 2 == 1)
+        {
+            Vector3 pos = uiBestScore.anchoredPosition;
+            pos.x *= -1;
+            uiBestScore.anchoredPosition = pos;
+            print(gameObject.name);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
