@@ -24,10 +24,13 @@ public class Face : MonoBehaviour
 
     private void OnTriggerStay(Collider col)
     {
-        if (!Dice.Instance.isRolling)
+        if (col.gameObject.CompareTag(gameObject.tag)) 
         {
-            col.enabled = false;
-            Dice.Instance.stick(col);
+            if (!Dice.Instance.isRolling)
+            {
+                col.enabled = false;
+                Dice.Instance.stick(col);
+            }
         }
     }
     

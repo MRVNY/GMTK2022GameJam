@@ -15,6 +15,10 @@ public class SceneManagerScript : MonoBehaviour
     private GameObject levelDoneUI;
     [SerializeField]
     private GameObject startUI;
+
+    private const int _firstLevelBuildIndex = 6;
+    private const int _levelSelectorSceneIndex = 1;
+    private const string maxCompletedLevelVarName = "maxCompletedLevel";
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
@@ -27,8 +31,9 @@ public class SceneManagerScript : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("Two instances of singletin SceneManagerScript.cs script were created. \nDestroying this instance");
+            Destroy(this.gameObject);
         }
-
         LevelSpecificEvents();
     }
 
@@ -37,21 +42,29 @@ public class SceneManagerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.N) && (IsGameOver))
         {
-            LoadNextlevel();
+            LoadNextLevel();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadScene();
         }
     }
-
     public  void ReloadScene()
     {
         Scene scene = SceneManager.GetActiveScene(); 
         SceneManager.LoadScene(scene.name);
     }
+    public void LoadLevelSelectorScene()
+    {
+        SceneManager.LoadScene(_levelSelectorSceneIndex);
+    }
+    public void LoadLevel(int levelId)
+    {
+        SceneManager.LoadScene(_firstLevelBuildIndex + levelId);
+    }
 
-    public void LoadNextlevel()
+
+    public void LoadNextLevel()
     {
         IsGameOver = false;
 
@@ -88,9 +101,27 @@ public class SceneManagerScript : MonoBehaviour
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
         IsGameOver = true;
+
+        int levelId = GetCurrentLevelId();
+        UpdateMaxLevelCompletedId(levelId); 
         StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
 
+
+    //can be called in a level to know which is this level rank in the game progression ( first,second,tenth,etc... )
+    public int GetCurrentLevelId()
+    {
+        print("this is level : " + (SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex));
+        return SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex;
+    }
+    public int GetMaxLevelCompletedId()
+    {
+        return PlayerPrefs.GetInt(maxCompletedLevelVarName,-1);
+    }
+    public void UpdateMaxLevelCompletedId(int completedLevelId)
+    {
+        PlayerPrefs.SetInt(maxCompletedLevelVarName, completedLevelId);
+    }
     private void CleanUI()
     {
         startUI.SetActive(false);
@@ -99,9 +130,31 @@ public class SceneManagerScript : MonoBehaviour
         diceAdviceUI.SetActive(false);
         levelDoneUI.SetActive(false);
     }
+    public IEnumerator LoadLevelWithDelay(int levelId, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManagerScript.Instance.LoadLevel(levelId);
+    }
     public IEnumerator LoadNextLevelWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SceneManagerScript.Instance.LoadNextlevel();
+        SceneManagerScript.Instance.LoadNextLevel();
+    }
+
+    public IEnumerator LoadMainMenuWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(0);
+    }
+
+    public IEnumerator LoadSceneWithDelay(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
+    }
+    public IEnumerator LoadLevelSelectorSceneWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManagerScript.Instance.LoadLevelSelectorScene();
     }
 }
