@@ -144,6 +144,11 @@ public class SceneManagerScript : MonoBehaviour
     public IEnumerator LoadMainMenuWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        LoadMainMenu();
+    }
+
+    public void LoadMainMenu()
+    {
         SceneManager.LoadScene(0);
     }
 
