@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.IO;
 
 public class SceneManagerScript : MonoBehaviour
 {
@@ -20,10 +21,18 @@ public class SceneManagerScript : MonoBehaviour
 
     public static bool IsGameOver { get; set; } = false;
 
-    [SerializeField] private TextMeshProUGUI frontNbMove;
-    [SerializeField] private TextMeshProUGUI middleNbMove;
-    [SerializeField] private TextMeshProUGUI backNbMove;
-    [SerializeField] private string nbOfMovementsVirginText;
+    [SerializeField] private TextMeshProUGUI frontNewBestNbMove;
+    [SerializeField] private TextMeshProUGUI middleNewBestNbMove;
+    [SerializeField] private TextMeshProUGUI backNewBestNbMove;
+    [SerializeField] private string newBestNbOfMovementsVirginText;
+    [SerializeField] private TextMeshProUGUI frontBestNbMove;
+    [SerializeField] private TextMeshProUGUI middleBestNbMove;
+    [SerializeField] private TextMeshProUGUI backBestNbMove;
+    [SerializeField] private string bestNbOfMovementsVirginText;
+    [SerializeField] private TextMeshProUGUI frontNewNbMove;
+    [SerializeField] private TextMeshProUGUI middleNewNbMove;
+    [SerializeField] private TextMeshProUGUI backNewNbMove;
+    [SerializeField] private string newNbOfMovementsVirginText;
     private int nbOfMovements;
 
     // Start is called before the first frame update
@@ -98,7 +107,7 @@ public class SceneManagerScript : MonoBehaviour
         CleanUI();
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
-        DisplayNumberOfMovement();
+        EndOfLevelScoreManagement();
         IsGameOver = true;
         StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
@@ -122,12 +131,92 @@ public class SceneManagerScript : MonoBehaviour
         nbOfMovements++;
     }
 
-    private void DisplayNumberOfMovement()
+
+    private void EndOfLevelScoreManagement()
     {
-        string textFiller = nbOfMovementsVirginText + " " + nbOfMovements;
-        backNbMove.text = textFiller;
-        frontNbMove.text = textFiller;
-        middleNbMove.text = textFiller;
+        int previousBestScore = LoadScore();
+        Debug.Log("Best : " + previousBestScore);
+        Debug.Log("New : " + nbOfMovements);
+        if (previousBestScore > nbOfMovements)
+        {
+            Debug.Log("New Save");
+            SaveScore(nbOfMovements);
+            DisplayNumberOfMovementNewBestScore();
+        }
+        else
+        {
+            Debug.Log("No Save");
+            DisplayNumberOfMovementBestAndNewScore(previousBestScore);
+        }
+    }
+
+
+    private void DisplayNumberOfMovementNewBestScore()
+    {
+        backNewBestNbMove.gameObject.SetActive(true);
+        backNewBestNbMove.gameObject.SetActive(true);
+        backNewBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        string textFiller = newBestNbOfMovementsVirginText + " " + nbOfMovements;
+        backNewBestNbMove.text = textFiller;
+        frontNewBestNbMove.text = textFiller;
+        middleNewBestNbMove.text = textFiller;
+    }
+
+    private void DisplayNumberOfMovementBestAndNewScore(int bestNB)
+    {
+        backNewBestNbMove.gameObject.SetActive(false);
+        backNewBestNbMove.gameObject.SetActive(false);
+        backNewBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        string textFillerNew = newNbOfMovementsVirginText + " " + nbOfMovements;
+        backNewNbMove.text = textFillerNew;
+        frontNewNbMove.text = textFillerNew;
+        middleNewNbMove.text = textFillerNew;
+        string textFillerBest = bestNbOfMovementsVirginText + " " + bestNB;
+        backBestNbMove.text = textFillerBest;
+        frontBestNbMove.text = textFillerBest;
+        middleBestNbMove.text = textFillerBest;
+    }
+
+
+    private void SaveScore(int score)
+    {
+        if(! Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Scores");
+        }
+        ScoreData newScore = new ScoreData();
+        newScore.score = score;
+
+        string jsonScore = JsonUtility.ToJson(newScore);
+        File.WriteAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json", jsonScore);
+    }
+
+
+    private int LoadScore()
+    {
+        if (!Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Scores");
+        }
+        if (!File.Exists(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json"))
+        {
+            return int.MaxValue;
+        }
+        string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json");
+        ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+        return bestScore.score;
     }
 
     private void OnDestroy()
