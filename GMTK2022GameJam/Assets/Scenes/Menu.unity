@@ -4666,10 +4666,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1294642376035649749, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 802.79
-      objectReference: {fileID: 0}
     - target: {fileID: 1643360299225847536, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_Name
       value: SceneManager
@@ -4738,10 +4734,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3555341510807280729, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 802.79
-      objectReference: {fileID: 0}
     - target: {fileID: 4282707952700373364, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4757,10 +4749,6 @@ PrefabInstance:
     - target: {fileID: 6819226965425935801, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7616399438519938825, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 802.79
       objectReference: {fileID: 0}
     - target: {fileID: 8157573002839203209, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_Name
