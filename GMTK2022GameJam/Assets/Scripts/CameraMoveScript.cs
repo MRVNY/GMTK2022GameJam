@@ -39,20 +39,9 @@ public class CameraMoveScript : MonoBehaviour
             
             if(Input.GetKeyDown("p") && !transitioning)
             {
-                // transitioning = true;
-                // if (isOrthographic) targetPos = posPersp;
-                // else targetPos = posOrtho;
-                
                 isOrthographic = !isOrthographic;
             }
 
-            // if (transitioning)
-            // {
-            //     // transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, 0.3f);
-            //     
-            //     if(Vector3.Distance(transform .position, targetPos) < 0.1f) transitioning = false;
-            // }
-            
             else
             {
                 if (isOrthographic) targetPos = posOrtho;
@@ -62,19 +51,28 @@ public class CameraMoveScript : MonoBehaviour
             transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, 0.2f);
         }
         
-        if(Input.GetKeyDown("a"))
+        if(Input.GetKeyDown("a") && !transitioning)
         {
             //rotate on y axis
             targetRot = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 90, 0);
             Dice.Instance.RotateCamera(1);
+            transitioning = true;
         }
-        else if(Input.GetKeyDown("d"))
+        else if(Input.GetKeyDown("d") && !transitioning)
         {
             //rotate on y axis
             targetRot = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 90, 0);
             Dice.Instance.RotateCamera(-1);
+            transitioning = true;
         }
-        
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 0.01f);
+
+        if (transitioning)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 0.01f);
+            if (Quaternion.Angle(transform.rotation, targetRot) == 0)
+            {
+                transitioning = false;
+            }
+        }
     }
 }
