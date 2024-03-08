@@ -10,7 +10,7 @@ public class DiceAI : Dice
 
     public GameObject startUI;
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         base.Start();
         moveSequence = new GameObject[4]{E,S, W, N};

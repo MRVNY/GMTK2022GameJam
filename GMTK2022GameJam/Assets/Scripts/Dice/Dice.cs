@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Dice : MonoBehaviour
@@ -20,14 +21,15 @@ public class Dice : MonoBehaviour
     protected int blockStep = 3;
     protected float speed = 0.01f;
     protected float wait = 0.2f;
-    protected Dictionary<GameObject,Vector3> PointAxe = new Dictionary<GameObject, Vector3>();
+    protected int offset = 3;
+    protected Dictionary<GameObject,Vector3> PointAxe;
 
     protected Vector3 hori;
     protected Vector3 verti;
     protected GameObject targetDir;
-    protected Dictionary<GameObject,Vector3> blockCheck = new Dictionary<GameObject, Vector3>();
+    protected Dictionary<GameObject,Vector3> blockCheck;
     
-    public static List<Face> downFaces = new List<Face>();
+    public static List<Face> downFaces;
     public GameObject StarsEffect;
     public GameObject SmokeEffect;
     public static Dice Instance { get; private set; }
@@ -40,20 +42,22 @@ public class Dice : MonoBehaviour
 
     protected Vector3 mouseStart;
     protected float mouseClick;
+    
+
     protected void Start()
     {
+        Instance = this;
         
-        if (Instance==null)
-        {
-            Instance = this;
-        }
+        PointAxe = new Dictionary<GameObject, Vector3>();
+        blockCheck = new Dictionary<GameObject, Vector3>();
+        downFaces = new List<Face>();
         
         rotateData = new RotateData[4]
         {
-            new RotateData{direction = "N", perspectiveOffset = new Vector3(2,0,-2), controlScheme = new GameObject[]{N,E,S,W}}, 
-            new RotateData{direction = "E", perspectiveOffset = new Vector3(-2,0,-2), controlScheme = new GameObject[]{E,S,W,N}},
-            new RotateData{direction = "S", perspectiveOffset = new Vector3(-2,0,2), controlScheme = new GameObject[]{S,W,N,E}},
-            new RotateData{direction = "W", perspectiveOffset = new Vector3(2,0,2), controlScheme = new GameObject[]{W,N,E,S}}
+            new RotateData{direction = "N", perspectiveOffset = new Vector3(offset,0,-offset), controlScheme = new GameObject[]{N,E,S,W}}, 
+            new RotateData{direction = "E", perspectiveOffset = new Vector3(-offset,0,-offset), controlScheme = new GameObject[]{E,S,W,N}},
+            new RotateData{direction = "S", perspectiveOffset = new Vector3(-offset,0,offset), controlScheme = new GameObject[]{S,W,N,E}},
+            new RotateData{direction = "W", perspectiveOffset = new Vector3(offset,0,offset), controlScheme = new GameObject[]{W,N,E,S}}
         };
         
         currentRotation = rotateData[0];
@@ -74,9 +78,7 @@ public class Dice : MonoBehaviour
         blockCheck.Add(E, hori);
         blockCheck.Add(W, -hori);
         
-        allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
-        recenter();
-        findDownFaces();
+        readjust();
     }
     
     private void Update()
@@ -126,6 +128,12 @@ public class Dice : MonoBehaviour
                     tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
                         ? move(targetDir)
                         : block(targetDir));
+            
+            // Separate
+            if (Input.GetKeyDown("b"))
+            {
+                separate();
+            }
         }
     }
 
@@ -218,6 +226,39 @@ public class Dice : MonoBehaviour
     public void stick(Collider col)
     {
         col.transform.SetParent(transform);
+        readjust();
+    }
+    
+    private void separate()
+    {
+        Dice newCube = allCubes.Last().GetComponent<Dice>();
+        
+        //Move hierarchy
+        newCube.transform.SetParent(transform.parent);
+        transform.SetParent(null);
+        
+        //Link references
+        newCube.N = N;
+        newCube.S = S;
+        newCube.E = E;
+        newCube.W = W;
+        newCube.tilemap = tilemap;
+        
+        //enable & disable face mesh collider
+        foreach (var face in diceFaces)
+        {
+            face.GetComponent<MeshCollider>().enabled = false;
+        }
+        
+        //disable myself
+        newCube.enabled = true;
+        enabled = false;
+
+        // readjust();
+    }
+
+    private void readjust()
+    {
         allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
         diceFaces = GetComponentsInChildren<Face>();
         recenter();
