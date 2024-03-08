@@ -21,7 +21,7 @@ public class PauseMenuScript : MonoBehaviour
 
     public bool IsInPause => pauseMenuPanel.activeInHierarchy;
 
-    void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -32,7 +32,9 @@ public class PauseMenuScript : MonoBehaviour
             Debug.LogWarning("Two instances of singletin PauseMenuScript.cs script were created. \nDestroying this instance");
             Destroy(this.gameObject);
         }
-
+    }
+    void Start()
+    {
         //reset panels
         controlsPanel.SetActive(false);
         audioPanel.SetActive(false);

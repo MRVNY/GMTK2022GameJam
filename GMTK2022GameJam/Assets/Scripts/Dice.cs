@@ -82,14 +82,14 @@ public class Dice : MonoBehaviour
     private void Update()
     {
         //Mouse controls
-        if (Input.GetMouseButtonDown(0) && !PauseMenuScript.Instance.IsInPause)
+        if (Input.GetMouseButtonDown(0) && !InPause())
         {
             if(Time.time - mouseClick < 0.2f) SceneManagerScript.Instance.ReloadScene();
             mouseStart = Input.mousePosition;
             mouseClick = Time.time;
         }
 
-        if (!isRolling && Input.GetMouseButtonUp(0) && !PauseMenuScript.Instance.IsInPause)
+        if (!isRolling && Input.GetMouseButtonUp(0) && !InPause())
         {
             Vector3 dir = Input.mousePosition - mouseStart;
             if(dir.magnitude > 50)
@@ -148,6 +148,10 @@ public class Dice : MonoBehaviour
         isRolling = false;
     }
 
+    private bool InPause()
+    {
+        return !PauseMenuScript.Instance || !PauseMenuScript.Instance.IsInPause;
+    }
     protected IEnumerator block(GameObject point)
     {
         if(CameraMoveScript.Instance!=null) 
