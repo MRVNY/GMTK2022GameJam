@@ -17,10 +17,23 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField]
     private GameObject audioPanel;
 
+    public static PauseMenuScript Instance { get; private set; }
 
-    // Start is called before the first frame update
+    public bool IsInPause => pauseMenuPanel.activeInHierarchy;
+
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Two instances of singletin PauseMenuScript.cs script were created. \nDestroying this instance");
+            Destroy(this.gameObject);
+        }
+
+        //reset panels
         controlsPanel.SetActive(false);
         audioPanel.SetActive(false);
         buttonsPanel.SetActive(true);
@@ -32,15 +45,20 @@ public class PauseMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            print("Input.GetKeyDown(KeyCode.Escape)");
             if(!IsVisible())
             {
+                //show pause menu
                 pauseMenuPanel.SetActive(true);
                 buttonsPanel.SetActive(true);
+                Time.timeScale = 0.0f;
             }
             else 
             {
+                
                 if(buttonsPanel.activeSelf)
                 {
+                    Time.timeScale = 1.0f;
                     pauseMenuPanel.SetActive(false);
                 }
                 else
@@ -60,16 +78,21 @@ public class PauseMenuScript : MonoBehaviour
 
     public void OnControlsButtonSelect()
     {
+        print("OnControlsButtonSelect");
+
         buttonsPanel.SetActive(false);
         controlsPanel.SetActive(true);
     }
     public void OnAudioButtonSelect()
     {
+        print("OnAudioButtonSelect");
         buttonsPanel.SetActive(false);
         audioPanel.SetActive(true);
     }
     public void OnGoToMenuButtonSelect()
     {
+        print("OnGoToMenuButtonSelect");
+        Time.timeScale = 1.0f;
         SceneManagerScript.Instance.LoadMainMenu();
     }
 }

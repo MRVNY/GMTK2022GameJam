@@ -82,14 +82,14 @@ public class Dice : MonoBehaviour
     private void Update()
     {
         //Mouse controls
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !PauseMenuScript.Instance.IsInPause)
         {
             if(Time.time - mouseClick < 0.2f) SceneManagerScript.Instance.ReloadScene();
             mouseStart = Input.mousePosition;
             mouseClick = Time.time;
         }
 
-        if (!isRolling && Input.GetMouseButtonUp(0))
+        if (!isRolling && Input.GetMouseButtonUp(0) && !PauseMenuScript.Instance.IsInPause)
         {
             Vector3 dir = Input.mousePosition - mouseStart;
             if(dir.magnitude > 50)
