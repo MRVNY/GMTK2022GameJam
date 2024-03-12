@@ -14,20 +14,22 @@ public class Dice : MonoBehaviour
     private int UP=0, RIGHT=1, DOWN=2, LEFT=3;
     
     public Tilemap tilemap;
-    protected Face[] diceFaces;
+    private Face[] diceFaces;
 
     public bool isRolling = false;
-    protected int step = 10;
-    protected int blockStep = 3;
-    protected float speed = 0.01f;
-    protected float wait = 0.2f;
-    protected int offset = 3;
-    protected Dictionary<GameObject,Vector3> PointAxe;
+    private int step = 10;
+    private int blockStep = 3;
+    private float speed = 0.01f;
+    private float wait = 0.2f;
+    private int offset = 3;
+    private Dictionary<GameObject,Vector3> PointAxe;
 
-    protected Vector3 hori;
-    protected Vector3 verti;
-    protected GameObject targetDir;
-    protected Dictionary<GameObject,Vector3> blockCheck;
+    private Vector3 hori;
+    private Vector3 verti;
+    private GameObject targetDir;
+    private Vector3 lastFallDir;
+    public Vector3 cantRollBackDir = Vector3.zero;
+    private Dictionary<GameObject,Vector3> blockCheck;
     
     public static List<Face> downFaces;
     public GameObject StarsEffect;
@@ -62,7 +64,7 @@ public class Dice : MonoBehaviour
         
         currentRotation = rotateData[0];
 
-        audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponentInParent<AudioSource>();
         diceFaces = GetComponentsInChildren<Face>();
         
         PointAxe.Add(N,Vector3.right);
@@ -80,7 +82,16 @@ public class Dice : MonoBehaviour
         
         readjust();
     }
-    
+
+    private void OnEnable()
+    {
+        if (Instance != null)
+        {
+            readjust();
+            Instance = this;
+        }
+    }
+
     private void Update()
     {
         //Mouse controls
@@ -106,7 +117,8 @@ public class Dice : MonoBehaviour
                     if(dir.y < 0) targetDir = currentRotation.controlScheme[DOWN];
                     else targetDir = currentRotation.controlScheme[UP];
                 }
-                StartCoroutine(
+                if(cantRollBackDir != blockCheck[targetDir])
+                    StartCoroutine(
                     tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
                         ? move(targetDir)
                         : block(targetDir));
@@ -123,14 +135,14 @@ public class Dice : MonoBehaviour
             else if (Input.GetKey(KeyCode.LeftArrow)) targetDir = currentRotation.controlScheme[LEFT];
             else targetDir = null;
             
-            if(targetDir!=null)
+            if(targetDir!=null && cantRollBackDir != blockCheck[targetDir])
                 StartCoroutine(
                     tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
                         ? move(targetDir)
                         : block(targetDir));
             
             // Separate
-            if (Input.GetKeyDown("b"))
+            if (Input.GetKeyDown("b") && allCubes.Length > 1 && Math.Abs(allCubes[0].transform.position.y - allCubes[1].transform.position.y) < 0.1f)
             {
                 separate();
             }
@@ -154,6 +166,23 @@ public class Dice : MonoBehaviour
         yield return new WaitForSeconds(wait);
         
         isRolling = false;
+
+        //Record the last direction where the dices fell flat 
+        if (allCubes.Length > 1)
+        {
+            if(((targetDir==N || targetDir==S) && N.transform.position.z - S.transform.position.z > 1.5f)
+               || ((targetDir==E || targetDir==W) && E.transform.position.x - W.transform.position.x > 1.5f))
+                lastFallDir = blockCheck[targetDir];
+        }
+        // Reactivate detection of the other dice
+        else if (!diceFaces[0].GetComponent<MeshCollider>().enabled)
+        {
+            foreach (var face in diceFaces)
+            {
+                face.GetComponent<MeshCollider>().enabled = true;
+            }
+            cantRollBackDir = Vector3.zero;
+        }
     }
 
     protected IEnumerator block(GameObject point)
@@ -225,17 +254,28 @@ public class Dice : MonoBehaviour
 
     public void stick(Collider col)
     {
+        foreach (var face in diceFaces)
+        {
+            face.GetComponent<MeshCollider>().enabled = false;
+        }
         col.transform.SetParent(transform);
         readjust();
     }
     
     private void separate()
     {
-        Dice newCube = allCubes.Last().GetComponent<Dice>();
+        //Decide which cube is the one to control
+        Dice newCube, oldCube;
+        int newCubeIndex = 0;
+        if(lastFallDir.z!=0) newCubeIndex = Math.Sign(lastFallDir.z) == Math.Sign(allCubes[0].transform.position.z-allCubes[1].transform.position.z) ? 0 : 1;
+        else if(lastFallDir.x!=0) newCubeIndex = Math.Sign(lastFallDir.x) == Math.Sign(allCubes[0].transform.position.x-allCubes[1].transform.position.x) ? 0 : 1;
         
+        newCube = allCubes[newCubeIndex].gameObject.GetComponent<Dice>();
+        oldCube = allCubes[1-newCubeIndex].gameObject.GetComponent<Dice>();
+            
         //Move hierarchy
         newCube.transform.SetParent(transform.parent);
-        transform.SetParent(null);
+        oldCube.transform.SetParent(null);
         
         //Link references
         newCube.N = N;
@@ -244,17 +284,12 @@ public class Dice : MonoBehaviour
         newCube.W = W;
         newCube.tilemap = tilemap;
         
-        //enable & disable face mesh collider
-        foreach (var face in diceFaces)
-        {
-            face.GetComponent<MeshCollider>().enabled = false;
-        }
-        
-        //disable myself
+        //disable oldCube
         newCube.enabled = true;
-        enabled = false;
-
-        // readjust();
+        oldCube.enabled = false;
+        newCube.cantRollBackDir = -lastFallDir;
+        
+        if(newCube == this) readjust();
     }
 
     private void readjust()
