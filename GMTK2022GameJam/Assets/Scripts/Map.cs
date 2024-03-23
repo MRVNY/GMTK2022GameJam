@@ -23,6 +23,7 @@ public class Map : MonoBehaviour
     {
         ai.isRolling = true;
         player.isRolling = true;
+        transform.rotation = Quaternion.Euler(180, 0, 0);
         StartCoroutine(Flip());
 
         if (Global.ended)

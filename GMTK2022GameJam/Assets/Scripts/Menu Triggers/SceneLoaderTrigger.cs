@@ -5,10 +5,9 @@ using UnityEngine;
 public class SceneLoaderTrigger : MonoBehaviour
 {
     public string nameSceneToLoad;
-    public float delay = 2.0f;
     private void OnTriggerEnter(Collider other)
     {
         print(nameSceneToLoad + " trigger activated");
-        StartCoroutine(SceneManagerScript.Instance.LoadSceneWithDelay(nameSceneToLoad, delay));
+        StartCoroutine(SceneManagerScript.Instance.LoadSceneWithDelay(nameSceneToLoad,0.7f));
     }
 }

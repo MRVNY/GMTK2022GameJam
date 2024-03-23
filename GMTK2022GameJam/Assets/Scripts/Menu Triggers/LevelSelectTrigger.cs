@@ -29,6 +29,7 @@ public class LevelSelectTrigger : MonoBehaviour
     [SerializeField]
     private bool uiOnLeftSide;
 
+
     private void Start()
     {
         if (levelId > SceneManagerScript.Instance.GetMaxLevelCompletedId() + 1)
@@ -36,10 +37,27 @@ public class LevelSelectTrigger : MonoBehaviour
             return;
         }
         uiBestScore.gameObject.SetActive(true);
-        foreach (var txt in scoreTexts) 
+        
+        bool hasPlayerDoneLevel = levelId <= SceneManagerScript.Instance.GetMaxLevelCompletedId();
+        print("hasPlayerDoneLevel " + hasPlayerDoneLevel + ",  levelId " + levelId + ", LevelSelectMenu.Instance.MaxLevelIdAvailable " + LevelSelectMenu.Instance.MaxLevelIdAvailable);
+        if (hasPlayerDoneLevel)
         {
-            txt.text = "Done in " + "???" + " moves";
+            int bestScore = SceneManagerScript.Instance.LoadScore(levelId);
+            foreach (var txt in scoreTexts)
+            {
+
+                txt.text = "Done in " + bestScore + " moves";
+            }
         }
+        else
+        {
+            foreach (var txt in scoreTexts)
+            {
+
+                txt.text = "";
+            }
+        }
+        
         if (levelId % 2 == 1)
         {
             Vector3 pos = uiBestScore.anchoredPosition;
@@ -52,7 +70,7 @@ public class LevelSelectTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("level select triggered");
-        StartCoroutine(SceneManagerScript.Instance.LoadLevelWithDelay(levelId,2f));
+        StartCoroutine(SceneManagerScript.Instance.LoadLevelWithDelay(levelId,0.7f));
     }
 
     public void Generate3dNumbers()

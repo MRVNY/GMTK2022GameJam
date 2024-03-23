@@ -9,6 +9,6 @@ public class MainMenuTriggerScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         print("main menu triggered");
-        StartCoroutine(SceneManagerScript.Instance.LoadMainMenuWithDelay(2f));
+        StartCoroutine(SceneManagerScript.Instance.LoadMainMenuWithDelay(0.7f));
     }
 }

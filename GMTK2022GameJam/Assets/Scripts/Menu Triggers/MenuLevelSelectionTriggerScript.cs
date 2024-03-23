@@ -7,7 +7,7 @@ public class MenuLevelSelectionTriggerScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("menu level selector triggered");
-        StartCoroutine(SceneManagerScript.Instance.LoadLevelSelectorSceneWithDelay(2f));
+        StartCoroutine(SceneManagerScript.Instance.LoadLevelSelectorSceneWithDelay(0.7f));
     }
 
 }

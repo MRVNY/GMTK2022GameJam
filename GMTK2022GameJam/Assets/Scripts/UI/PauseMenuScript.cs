@@ -47,7 +47,6 @@ public class PauseMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            print("Input.GetKeyDown(KeyCode.Escape)");
             if(!IsVisible())
             {
                 //show pause menu
