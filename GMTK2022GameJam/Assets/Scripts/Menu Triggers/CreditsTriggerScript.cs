@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CreditsTriggerScript : MonoBehaviour
 {
-    public Map map;
+    public MenuMap map;
 
     private bool detect = true;
 

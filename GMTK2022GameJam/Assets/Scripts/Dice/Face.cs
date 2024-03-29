@@ -28,7 +28,7 @@ public class Face : MonoBehaviour
         {
             if (!Dice.Instance.isRolling)
             {
-                col.enabled = false;
+                // col.enabled = false;
                 Dice.Instance.stick(col);
             }
         }
