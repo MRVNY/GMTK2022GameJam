@@ -44,12 +44,15 @@ public class Dice : MonoBehaviour
 
     protected Vector3 mouseStart;
     protected float mouseClick;
-    
 
-    protected void Start()
+
+    protected void Awake()
     {
         Instance = this;
-        
+
+    }
+    protected void Start()
+    {   
         PointAxe = new Dictionary<GameObject, Vector3>();
         blockCheck = new Dictionary<GameObject, Vector3>();
         downFaces = new List<Face>();
