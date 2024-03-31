@@ -27,7 +27,7 @@ public class DiceReplicaVisualisation : MonoBehaviour
         MeshRenderer[] allFacesRenderers = _playerDice.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i< diceReplicaTr.childCount; i++)
         {
-            diceReplicaTr.GetChild(i).GetComponent<MeshRenderer>().material = allFacesRenderers[i].material;
+            diceReplicaTr.GetChild(i).GetComponent<MeshRenderer>().material = _playerDice.transform.GetChild(i).GetComponent<MeshRenderer>().material;
         }
 
 
