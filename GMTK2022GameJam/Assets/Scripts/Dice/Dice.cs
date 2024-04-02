@@ -49,10 +49,9 @@ public class Dice : MonoBehaviour
     protected void Awake()
     {
         Instance = this;
-
     }
     protected void Start()
-    {   
+    {
         PointAxe = new Dictionary<GameObject, Vector3>();
         blockCheck = new Dictionary<GameObject, Vector3>();
         downFaces = new List<Face>();

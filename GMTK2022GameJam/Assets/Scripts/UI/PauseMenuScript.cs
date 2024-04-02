@@ -96,4 +96,5 @@ public class PauseMenuScript : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneManagerScript.Instance.LoadMainMenu();
     }
+
 }
