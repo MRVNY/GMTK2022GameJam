@@ -129,7 +129,7 @@ public class Dice : MonoBehaviour
         }
         
         //Keyboard controls
-        if (!isRolling)
+        if (!isRolling && !InPause())
         {
             if (Input.GetKey(KeyCode.UpArrow)) targetDir = currentRotation.controlScheme[UP];
             else if (Input.GetKey(KeyCode.RightArrow)) targetDir = currentRotation.controlScheme[RIGHT];
@@ -191,7 +191,8 @@ public class Dice : MonoBehaviour
 
     private bool InPause()
     {
-        return !PauseMenuScript.Instance || PauseMenuScript.Instance.IsInPause;
+        //print(!PauseManager.Instance || PauseManager.Instance.IsGamePaused);
+        return !PauseManager.Instance || PauseManager.Instance.IsGamePaused;
     }
     protected IEnumerator block(GameObject point)
     {

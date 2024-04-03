@@ -17,22 +17,9 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField]
     private GameObject audioPanel;
 
-    public static PauseMenuScript Instance { get; private set; }
-
     public bool IsInPause => pauseMenuPanel.activeInHierarchy;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning("Two instances of singletin PauseMenuScript.cs script were created. \nDestroying this instance");
-            Destroy(this.gameObject);
-        }
-    }
+    private const int _pausePriorityValue = 0;
     void Start()
     {
         //reset panels
@@ -52,14 +39,14 @@ public class PauseMenuScript : MonoBehaviour
                 //show pause menu
                 pauseMenuPanel.SetActive(true);
                 buttonsPanel.SetActive(true);
-                Time.timeScale = 0.0f;
+                PauseManager.Instance.SetGameInPause(true, _pausePriorityValue);
             }
             else 
             {
                 
                 if(buttonsPanel.activeSelf)
                 {
-                    Time.timeScale = 1.0f;
+                    PauseManager.Instance.SetGameInPause(false, _pausePriorityValue);
                     pauseMenuPanel.SetActive(false);
                 }
                 else
@@ -93,7 +80,7 @@ public class PauseMenuScript : MonoBehaviour
     public void OnGoToMenuButtonSelect()
     {
         print("OnGoToMenuButtonSelect");
-        Time.timeScale = 1.0f;
+        PauseManager.Instance.SetGameInPause(false, _pausePriorityValue);
         SceneManagerScript.Instance.LoadMainMenu();
     }
 
