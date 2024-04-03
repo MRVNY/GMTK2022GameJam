@@ -6,69 +6,84 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Scenes/Menus/Menu.unity
     guid: 940b7902d479242e4850d1746b036515
   - enabled: 1
-    path: Assets/Scenes/Level_1.unity
+    path: Assets/Scenes/Menus/Level Selector Menu/LevelSelectMenu.unity
+    guid: 10c1a47b3cf7ceb428ed91f46d0160a6
+  - enabled: 1
+    path: Assets/Scenes/Menus/Level Selector Menu/LevelSelectMenu_1_10.unity
+    guid: 28d7f8ccc915daf42bfe5a8b232626a3
+  - enabled: 1
+    path: Assets/Scenes/Menus/Level Selector Menu/LevelSelectMenu_11_20.unity
+    guid: 47518a9e6fd1020478901f9df1d6b528
+  - enabled: 1
+    path: Assets/Scenes/Menus/Level Selector Menu/LevelSelectMenu_21_30.unity
+    guid: f905510f8fe8a2746860c0369a4c6100
+  - enabled: 1
+    path: Assets/Scenes/Menus/Level Selector Menu/LevelSelectMenu_31_40.unity
+    guid: e391cd01abdd80f449ae5f973ace74c0
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_1.unity
     guid: c2a08e2cf2d09bb439e940a5c6b07546
   - enabled: 1
-    path: Assets/Scenes/Level_2.unity
+    path: Assets/Scenes/Levels/Level_2.unity
     guid: 407a1562221dfe245a0fc76dfff6da79
   - enabled: 1
-    path: Assets/Scenes/Level_3.unity
+    path: Assets/Scenes/Levels/Level_3.unity
     guid: 32cb12d42a905064f8978b54c9e818b9
   - enabled: 1
-    path: Assets/Scenes/Level_4.unity
+    path: Assets/Scenes/Levels/Level_4.unity
     guid: 3ead1e33a6ff27043ad29ec889e4471a
   - enabled: 1
-    path: Assets/Scenes/Level_5.unity
+    path: Assets/Scenes/Levels/Level_5.unity
     guid: afac025803621fa44ba68b07f4feff81
   - enabled: 1
-    path: Assets/Scenes/Level_intro.unity
+    path: Assets/Scenes/Levels/Level_intro.unity
     guid: 77c07b3c39dc2473da01412dbacdfc0a
   - enabled: 1
-    path: Assets/Scenes/Level_9.unity
+    path: Assets/Scenes/Levels/Level_9.unity
     guid: f4532d0281974ee4eabfad9364a7e64a
   - enabled: 1
-    path: Assets/Scenes/Level_intro 1.unity
+    path: Assets/Scenes/Levels/Level_intro 1.unity
     guid: e96e29e194778493c8ac57786051cd0e
   - enabled: 1
-    path: Assets/Scenes/Level_6.unity
+    path: Assets/Scenes/Levels/Level_6.unity
     guid: 0f7284c4c4c26194982d2d5ceb70d051
   - enabled: 1
-    path: Assets/Scenes/Level_10.unity
+    path: Assets/Scenes/Levels/Level_10.unity
     guid: 107e0a5ddb928d04596d47c8eb9922e8
   - enabled: 1
-    path: Assets/Scenes/Level_11.unity
+    path: Assets/Scenes/Levels/Level_11.unity
     guid: 5c581b017367a3f49b800b5b0fa33f05
   - enabled: 1
-    path: Assets/Scenes/Level_13.unity
+    path: Assets/Scenes/Levels/Level_13.unity
     guid: 194674910474b5c4ca07730d5fcce49a
   - enabled: 1
-    path: Assets/Scenes/Level_Sticky_1 1.unity
+    path: Assets/Scenes/Levels/2Dices/Level_Sticky_1 1.unity
     guid: b40791ef8628442d5b9616f5aa251776
   - enabled: 1
-    path: Assets/Scenes/Level_Sticky_1 2.unity
+    path: Assets/Scenes/Levels/2Dices/Level_Sticky_1 2.unity
     guid: e3ec2c133f1af492f82ef8e8c7529131
   - enabled: 1
-    path: Assets/Scenes/Level_Sticky_1 3.unity
+    path: Assets/Scenes/Levels/2Dices/Level_Sticky_1 3.unity
     guid: 88daa096cfc9b40a79fedc293efee1aa
   - enabled: 1
-    path: Assets/Scenes/Level_Sticky_1 4.unity
+    path: Assets/Scenes/Levels/2Dices/Level_Sticky_1 4.unity
     guid: 0fbdc87c38ebf493eb71cf7fb60a4ab1
   - enabled: 1
-    path: Assets/Scenes/Level_Sticky_2 1.unity
+    path: Assets/Scenes/Levels/2Dices_OneWay/Level_Sticky_2 1.unity
     guid: 6f25c439d04164aa2829348db735849b
   - enabled: 1
     path: Assets/Scenes/Trash/Level_Sticky_2 2.unity
     guid: b14435fd3b1dd4be2988eefde91819f8
   - enabled: 1
-    path: Assets/Scenes/Level_8.unity
+    path: Assets/Scenes/Levels/Level_8.unity
     guid: eb8a7e37e3a542a45b4eb9c08d059793
   - enabled: 1
-    path: Assets/Scenes/Level_12.unity
+    path: Assets/Scenes/Levels/Level_12.unity
     guid: 82da2c0aed40f0f4e899d0d7e9cfd4a9
   - enabled: 1
-    path: Assets/Scenes/Level_14.unity
+    path: Assets/Scenes/Levels/Level_14.unity
     guid: fc6be575d041e334ab127a770bfcf171
   m_configObjects: {}

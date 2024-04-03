@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
+using System.Linq;
 
 public class SceneManagerScript : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class SceneManagerScript : MonoBehaviour
     private GameObject levelDoneUI;
     [SerializeField]
     private GameObject startUI;
+
+    private const int _firstLevelBuildIndex = 6;
+    private const int _levelSelectorSceneIndex = 1;
+    private const string maxCompletedLevelVarName = "maxCompletedLevel";
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
@@ -35,17 +40,20 @@ public class SceneManagerScript : MonoBehaviour
     [SerializeField] private string newNbOfMovementsVirginText;
     private int nbOfMovements;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        if (Instance==null)
+        if (Instance == null)
         {
             Instance = this;
         }
         else
         {
+            Debug.LogWarning("Two instances of singletin SceneManagerScript.cs script were created. \nDestroying this instance");
+            Destroy(this.gameObject);
         }
-
+    }
+    void Start()
+    {
         LevelSpecificEvents();
 
         nbOfMovements = 0;
@@ -57,21 +65,29 @@ public class SceneManagerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.N) && (IsGameOver))
         {
-            LoadNextlevel();
+            LoadNextLevel();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadScene();
         }
     }
-
     public  void ReloadScene()
     {
         Scene scene = SceneManager.GetActiveScene(); 
         SceneManager.LoadScene(scene.name);
     }
+    public void LoadLevelSelectorScene()
+    {
+        SceneManager.LoadScene(_levelSelectorSceneIndex);
+    }
+    public void LoadLevel(int levelId)
+    {
+        SceneManager.LoadScene(_firstLevelBuildIndex + levelId);
+    }
 
-    public void LoadNextlevel()
+
+    public void LoadNextLevel()
     {
         IsGameOver = false;
 
@@ -109,9 +125,27 @@ public class SceneManagerScript : MonoBehaviour
         levelDoneUI.SetActive(true);
         EndOfLevelScoreManagement();
         IsGameOver = true;
+
+        int levelId = GetCurrentLevelId();
+        UpdateMaxLevelCompletedId(levelId); 
         StartCoroutine((LoadNextLevelWithDelay(3f)));
     }
 
+
+    //can be called in a level to know which is this level rank in the game progression ( first,second,tenth,etc... )
+    public int GetCurrentLevelId()
+    {
+        print("this is level : " + (SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex));
+        return SceneManager.GetActiveScene().buildIndex - _firstLevelBuildIndex;
+    }
+    public int GetMaxLevelCompletedId()
+    {
+        return PlayerPrefs.GetInt(maxCompletedLevelVarName,-1);
+    }
+    public void UpdateMaxLevelCompletedId(int completedLevelId)
+    {
+        PlayerPrefs.SetInt(maxCompletedLevelVarName, completedLevelId);
+    }
     private void CleanUI()
     {
         startUI.SetActive(false);
@@ -120,10 +154,37 @@ public class SceneManagerScript : MonoBehaviour
         diceAdviceUI.SetActive(false);
         levelDoneUI.SetActive(false);
     }
+    public IEnumerator LoadLevelWithDelay(int levelId, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManagerScript.Instance.LoadLevel(levelId);
+    }
     public IEnumerator LoadNextLevelWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SceneManagerScript.Instance.LoadNextlevel();
+        SceneManagerScript.Instance.LoadNextLevel();
+    }
+
+    public IEnumerator LoadMainMenuWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        LoadMainMenu();
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public IEnumerator LoadSceneWithDelay(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
+    }
+    public IEnumerator LoadLevelSelectorSceneWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManagerScript.Instance.LoadLevelSelectorScene();
     }
 
     private void ListenToDiceMoving()
@@ -203,6 +264,47 @@ public class SceneManagerScript : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json", jsonScore);
     }
 
+
+    /*
+    public List<int> LoadAllBestScores(int levelIdMin, int levelIdMax)
+    {
+        List<int> scores = new List<int>();
+        if (!Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            return null;
+        }
+        for (int i = levelIdMin; i<=levelIdMax;i++)
+        {
+            if(!File.Exists(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json"))
+            {
+                scores[i] = -1;
+                return scores;
+            }
+            else
+            {
+                string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json");
+                ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+                scores[i] = bestScore.score;
+            }
+        }
+        return scores;
+    }*/
+
+    public int LoadScore(int levelId)
+    {
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(_firstLevelBuildIndex + levelId);
+        if (scenePath == "")
+        {
+            Debug.LogError("Could not load data for level with levelId = " + levelId);
+            return -1;
+        }
+        string sceneName = scenePath.Split("/")[^1];
+        sceneName = sceneName.Split(".")[0];
+
+        string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + sceneName + ".json");
+        ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+        return bestScore.score;
+    }
 
     private int LoadScore()
     {

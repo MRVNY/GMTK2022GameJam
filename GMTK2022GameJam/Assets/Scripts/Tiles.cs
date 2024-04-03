@@ -7,38 +7,42 @@ using UnityEngine.Tilemaps;
 
 public class Tiles : MonoBehaviour
 {
+
     public static Tiles Instance { get; private set; }
-    public static Tilemap current;
-    public static Tilemap goal;
+    private Tilemap _current;
+    private Tilemap _goal;
 
     private List<Vector3> availablePlaces;
 
     private static int _wrongTiles = 0;
-    // Start is called before the first frame update
     public void OnEnable()
     {
         if (Instance==null)
         {
             Instance = this;
         }
-        
+        else
+        {
+            Debug.LogWarning("Two instances of singleton Tiles.cs script were created. \nDestroying this instance");
+            Destroy(this.gameObject);
+        }
         var tileMaps = GetComponentsInChildren<Tilemap>();
-        goal = tileMaps[0];
-        Assert.IsTrue(goal.gameObject.name.Equals("Goal"));
-        current = tileMaps[1];
-        Assert.IsTrue(current.gameObject.name.Equals("Current"));
+        _goal = tileMaps[0];
+        Assert.IsTrue(_goal.gameObject.name.Equals("Goal"));
+        _current = tileMaps[1];
+        Assert.IsTrue(_current.gameObject.name.Equals("Current"));
 
 
         availablePlaces = new List<Vector3>();
  
-        for (int n = current.cellBounds.xMin; n < current.cellBounds.xMax; n++)
+        for (int n = _current.cellBounds.xMin; n < _current.cellBounds.xMax; n++)
         {
-            for (int p = current.cellBounds.yMin; p < current.cellBounds.yMax; p++)
+            for (int p = _current.cellBounds.yMin; p < _current.cellBounds.yMax; p++)
             {
-                Vector3Int localPlace = (new Vector3Int(n, p, (int)current.transform.position.y));
-                current.SetTileFlags(localPlace, TileFlags.None);
-                Vector3 place = current.CellToWorld(localPlace);
-                if (goal.HasTile(localPlace))
+                Vector3Int localPlace = (new Vector3Int(n, p, (int)_current.transform.position.y));
+                _current.SetTileFlags(localPlace, TileFlags.None);
+                Vector3 place = _current.CellToWorld(localPlace);
+                if (_goal.HasTile(localPlace))
                 {
                     //Tile at "place"
                     availablePlaces.Add(place);
@@ -48,11 +52,11 @@ public class Tiles : MonoBehaviour
         
         _wrongTiles=availablePlaces.Count;
         //print(availablePlaces.Count);
-        
-        current.GetComponent<TilemapRenderer>().receiveShadows = true;
-        current.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-        goal.GetComponent<TilemapRenderer>().receiveShadows = true;
-        goal.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        _current.GetComponent<TilemapRenderer>().receiveShadows = true;
+        _current.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        _goal.GetComponent<TilemapRenderer>().receiveShadows = true;
+        _goal.GetComponent<TilemapRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 
     }
 
@@ -64,25 +68,25 @@ public class Tiles : MonoBehaviour
         if (downFace != null)
         {
             //gerer le cas o� on passe d'une non couleur a une mauvaise couleur
-            var tilePos = current.WorldToCell(downFace.transform.position);
-            var previousColor = current.GetColor(tilePos);
-            var goalColor = goal.GetColor(tilePos);
+            var tilePos = _current.WorldToCell(downFace.transform.position);
+            var previousColor = _current.GetColor(tilePos);
+            var _goalColor = _goal.GetColor(tilePos);
 
             if (ColorEquals(previousColor, downFace.color)) // nothing has changed
             {
                 return;
             }
 
-            current.SetColor(tilePos, downFace.color);
+            _current.SetColor(tilePos, downFace.color);
             if (previousColor!=Color.white && !ColorEquals( previousColor, downFace.color)) // has changed 
             {
-                if (ColorEquals(previousColor, goalColor) && !ColorEquals(goalColor, downFace.color)) //was valid before and is not valid now
+                if (ColorEquals(previousColor, _goalColor) && !ColorEquals(_goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
                     if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                     _wrongTiles++;
                 }
-                else if (!ColorEquals(previousColor, goalColor) && ColorEquals(goalColor, downFace.color)) //wasnt valid before and is valid now
+                else if (!ColorEquals(previousColor, _goalColor) && ColorEquals(_goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
                     if(_wrongTiles != availablePlaces.Count) StartCoroutine(SuccessEffect(downFace));
