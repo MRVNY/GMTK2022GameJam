@@ -7,7 +7,8 @@ using UnityEngine.Tilemaps;
 
 public class Tiles : MonoBehaviour
 {
-
+    [SerializeField]
+    private string tileRenderersSortingLayerName;
     public static Tiles Instance { get; private set; }
     private Tilemap _current;
     private Tilemap _goal;
@@ -32,6 +33,12 @@ public class Tiles : MonoBehaviour
         _current = tileMaps[1];
         Assert.IsTrue(_current.gameObject.name.Equals("Current"));
 
+        var tileMapRenderers = GetComponentsInChildren<TilemapRenderer>();
+        foreach(var tileRenderer in tileMapRenderers)
+        {
+            tileRenderer.sortingLayerName = tileRenderersSortingLayerName;
+        }
+        
 
         availablePlaces = new List<Vector3>();
  
@@ -60,7 +67,8 @@ public class Tiles : MonoBehaviour
 
     }
 
-
+    private Color _neutralColorCurrent = new Color(0.594f, 0.594f, 0.594f, 1.0f);
+    private Color _neutralColorGoal = Color.white;
     public void UpdateTile(Face downFace)
     {
         
@@ -77,19 +85,29 @@ public class Tiles : MonoBehaviour
                 return;
             }
 
+
             _current.SetColor(tilePos, downFace.color);
             if (previousColor!=Color.white && !ColorEquals( previousColor, downFace.color)) // has changed 
             {
                 if (ColorEquals(previousColor, _goalColor) && !ColorEquals(_goalColor, downFace.color)) //was valid before and is not valid now
                 {
                     //Debug.Log("Wrong color association");
-                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
+                    if (_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                     _wrongTiles++;
+                }
+                else if (!ColorEquals(_goalColor, _neutralColorGoal) && ColorEquals(previousColor, _neutralColorCurrent) && !ColorEquals(_goalColor, downFace.color)) //is goal and was neutral before and is not valid now
+                {
+                    if (_wrongTiles != availablePlaces.Count) StartCoroutine(FailEffect(downFace));
                 }
                 else if (!ColorEquals(previousColor, _goalColor) && ColorEquals(_goalColor, downFace.color)) //wasnt valid before and is valid now
                 {
                     //Debug.Log("Good color association");
-                    if(_wrongTiles != availablePlaces.Count) StartCoroutine(SuccessEffect(downFace));
+                    if(_wrongTiles != availablePlaces.Count)
+                    {
+                        //StartCoroutine(SuccessEffect(downFace));
+                    }
+                    StartCoroutine(SuccessEffect(downFace));
+
                     _wrongTiles--;
 
                     if (_wrongTiles == 0)
