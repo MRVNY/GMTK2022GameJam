@@ -191,6 +191,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 849366289731695567, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 779.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 849366289731695567, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 91.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1643360299225847536, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_Name
       value: SceneManager
@@ -262,6 +270,14 @@ PrefabInstance:
     - target: {fileID: 2595611515786622748, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
       propertyPath: m_ReferenceResolution.y
       value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953087574193627674, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 779.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953087574193627674, guid: 9847ca5ae19087c40b8e04ff7754b0b9, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 91.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
