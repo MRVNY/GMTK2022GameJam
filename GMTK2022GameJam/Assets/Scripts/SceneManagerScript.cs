@@ -63,7 +63,7 @@ public class SceneManagerScript : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N) && (IsGameOver))
+        if (Input.GetKeyDown(KeyCode.Escape) && (IsGameOver))
         {
             LoadNextLevel();
         }

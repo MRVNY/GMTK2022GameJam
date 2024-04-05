@@ -505,7 +505,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'N' or wait to go to next level
+  m_text: 'Press ''Enter'' or wait to go to next level
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 860495349a5054e4c9056fa75535d797, type: 2}
   m_sharedMaterial: {fileID: 4798589122509721575, guid: 860495349a5054e4c9056fa75535d797, type: 2}
@@ -1717,7 +1719,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'N' or wait to go to next level
+  m_text: 'Press ''Enter'' or wait to go to next level
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 860495349a5054e4c9056fa75535d797, type: 2}
   m_sharedMaterial: {fileID: 4798589122509721575, guid: 860495349a5054e4c9056fa75535d797, type: 2}
@@ -3080,7 +3084,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'N' or wait to go to next level
+  m_text: 'Press ''Enter'' or wait to go to next level
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 860495349a5054e4c9056fa75535d797, type: 2}
   m_sharedMaterial: {fileID: 4798589122509721575, guid: 860495349a5054e4c9056fa75535d797, type: 2}
