@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,8 @@ public class Tiles : MonoBehaviour
     private List<Vector3> availablePlaces;
 
     private static int _wrongTiles = 0;
-    public void OnEnable()
+
+    private void Awake()
     {
         if (Instance==null)
         {
@@ -26,6 +28,10 @@ public class Tiles : MonoBehaviour
             Debug.LogWarning("Two instances of singleton Tiles.cs script were created. \nDestroying this instance");
             Destroy(this.gameObject);
         }
+    }
+
+    public void OnEnable()
+    {
         var tileMaps = GetComponentsInChildren<Tilemap>();
         _goal = tileMaps[0];
         Assert.IsTrue(_goal.gameObject.name.Equals("Goal"));

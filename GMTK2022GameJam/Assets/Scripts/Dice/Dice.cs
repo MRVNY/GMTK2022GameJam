@@ -44,11 +44,16 @@ public class Dice : MonoBehaviour
 
     protected Vector3 mouseStart;
     protected float mouseClick;
-    
+
+
+    protected void Awake()
+    {
+        if(enabled)
+            Instance = this;
+    }
 
     protected void Start()
     {
-        Instance = this;
         
         PointAxe = new Dictionary<GameObject, Vector3>();
         blockCheck = new Dictionary<GameObject, Vector3>();
@@ -80,15 +85,16 @@ public class Dice : MonoBehaviour
         blockCheck.Add(E, hori);
         blockCheck.Add(W, -hori);
         
-        readjust();
+        // readjust();
     }
 
     private void OnEnable()
     {
         if (Instance != null)
         {
-            readjust();
             Instance = this;
+            Start();
+            // readjust();
         }
     }
 
@@ -160,8 +166,9 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         
-        recenter();
-        findDownFaces();
+        // recenter();
+        // findDownFaces();
+        readjust();
         
         yield return new WaitForSeconds(wait);
         
