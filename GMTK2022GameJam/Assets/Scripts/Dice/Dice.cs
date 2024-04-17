@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Dice : MonoBehaviour
@@ -22,6 +23,7 @@ public class Dice : MonoBehaviour
     private float speed = 0.01f;
     private float wait = 0.2f;
     private int offset = 3;
+    private Task rolling;
     private Dictionary<GameObject,Vector3> PointAxe;
 
     private Vector3 hori;
@@ -124,10 +126,10 @@ public class Dice : MonoBehaviour
                     else targetDir = currentRotation.controlScheme[UP];
                 }
                 if(cantRollBackDir != blockCheck[targetDir])
-                    StartCoroutine(
+                    rolling = 
                     tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
                         ? move(targetDir)
-                        : block(targetDir));
+                        : block(targetDir);
             }
             dir = Vector3.zero;
         }
@@ -142,10 +144,10 @@ public class Dice : MonoBehaviour
             else targetDir = null;
             
             if(targetDir!=null && cantRollBackDir != blockCheck[targetDir])
-                StartCoroutine(
+                rolling =
                     tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
                         ? move(targetDir)
-                        : block(targetDir));
+                        : block(targetDir);
             
             // Separate
             if (Input.GetKeyDown("b") && allCubes.Length > 1 && Math.Abs(allCubes[0].transform.position.y - allCubes[1].transform.position.y) < 0.1f)
@@ -155,7 +157,7 @@ public class Dice : MonoBehaviour
         }
     }
 
-    protected IEnumerator move(GameObject point)
+    protected async Task move(GameObject point)
     {
         audioSource.clip = moveSound;
         audioSource.Play();
@@ -163,16 +165,12 @@ public class Dice : MonoBehaviour
         for (int i = 0; i < (90 / step); i++)
         {
             transform.RotateAround(point.transform.position, PointAxe[point], step);
-            yield return new WaitForSeconds(speed);
+            await Task.Delay(TimeSpan.FromSeconds(speed));
         }
         
         // recenter();
         // findDownFaces();
         readjust();
-        
-        yield return new WaitForSeconds(wait);
-        
-        isRolling = false;
 
         //Record the last direction where the dices fell flat 
         if (allCubes.Length > 1)
@@ -190,9 +188,13 @@ public class Dice : MonoBehaviour
             }
             cantRollBackDir = Vector3.zero;
         }
+        
+        await Task.Delay(TimeSpan.FromSeconds(wait));
+        
+        isRolling = false;
     }
 
-    protected IEnumerator block(GameObject point)
+    protected async Task block(GameObject point)
     {
         if(CameraMoveScript.Instance!=null) 
             CameraMoveScript.Instance.diceIsBlocked = true;
@@ -201,16 +203,16 @@ public class Dice : MonoBehaviour
         for(int i=0; i<blockStep; i++)
         {
             transform.RotateAround(point.transform.position, PointAxe[point], step);
-            yield return new WaitForSeconds(speed);
+            await Task.Delay(TimeSpan.FromSeconds(speed));
         }
         
         for(int i=0; i<blockStep; i++)
         {
             transform.RotateAround(point.transform.position, PointAxe[point], -step);
-            yield return new WaitForSeconds(speed);
+            await Task.Delay(TimeSpan.FromSeconds(speed));
         }
 
-        yield return new WaitForSeconds(wait);
+        await Task.Delay(TimeSpan.FromSeconds(wait));
         isRolling = false;
         if(CameraMoveScript.Instance!=null) 
             CameraMoveScript.Instance.diceIsBlocked = false;
@@ -259,14 +261,19 @@ public class Dice : MonoBehaviour
         }
     }
 
-    public void stick(Collider col)
+    public async void stick(Collider col)
     {
+        //wait a coroutine to finish
+        if(rolling != null) await rolling;
+        
+        isRolling = true;
         foreach (var face in diceFaces)
         {
             face.GetComponent<MeshCollider>().enabled = false;
         }
         col.transform.SetParent(transform);
         readjust();
+        isRolling = false;
     }
     
     private void separate()

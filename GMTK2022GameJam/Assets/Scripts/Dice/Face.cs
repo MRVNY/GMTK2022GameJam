@@ -25,11 +25,7 @@ public class Face : MonoBehaviour
     {
         if (col.gameObject.CompareTag(gameObject.tag)) 
         {
-            if (!Dice.Instance.isRolling)
-            {
-                // col.enabled = false;
-                Dice.Instance.stick(col);
-            }
+            Dice.Instance.stick(col);
         }
     }
     
