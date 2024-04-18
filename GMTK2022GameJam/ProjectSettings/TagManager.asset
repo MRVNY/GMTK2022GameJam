@@ -14,7 +14,7 @@ TagManager:
   - UI
   - TileMap
   - Dice
-  - 
+  - Dice Replica Visualisation
   - 
   - 
   - 
@@ -41,4 +41,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Tiles
+    uniqueID: 36938245
+    locked: 0
+  - name: Particles
+    uniqueID: 2232417935
     locked: 0

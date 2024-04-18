@@ -105,14 +105,14 @@ public class Dice : MonoBehaviour
     private void Update()
     {
         //Mouse controls
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !InPause())
         {
             if(Time.time - mouseClick < 0.2f) SceneManagerScript.Instance.ReloadScene();
             mouseStart = Input.mousePosition;
             mouseClick = Time.time;
         }
 
-        if (!isRolling && Input.GetMouseButtonUp(0))
+        if (!isRolling && Input.GetMouseButtonUp(0) && !InPause())
         {
             Vector3 dir = Input.mousePosition - mouseStart;
             if(dir.magnitude > 50)
@@ -137,7 +137,7 @@ public class Dice : MonoBehaviour
         }
         
         //Keyboard controls
-        if (!isRolling)
+        if (!isRolling && !InPause())
         {
             if (Input.GetKey(KeyCode.UpArrow)) targetDir = currentRotation.controlScheme[UP];
             else if (Input.GetKey(KeyCode.RightArrow)) targetDir = currentRotation.controlScheme[RIGHT];
@@ -161,6 +161,8 @@ public class Dice : MonoBehaviour
 
     protected async Task move(GameObject point)
     {
+        //Debug.Log("Bouge");
+        DiceEventSystem.DiceMoved();
         audioSource.clip = moveSound;
         audioSource.Play();
         isRolling = true;
@@ -196,6 +198,11 @@ public class Dice : MonoBehaviour
         isRolling = false;
     }
 
+    private bool InPause()
+    {
+        //print(!PauseManager.Instance || PauseManager.Instance.IsGamePaused);
+        return !PauseManager.Instance || PauseManager.Instance.IsGamePaused;
+    }
     protected async Task block(GameObject point)
     {
         if(CameraMoveScript.Instance!=null) 

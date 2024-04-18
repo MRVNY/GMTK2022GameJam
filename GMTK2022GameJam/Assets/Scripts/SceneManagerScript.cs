@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.IO;
+using System.Linq;
 
 public class SceneManagerScript : MonoBehaviour
 {
@@ -22,10 +25,24 @@ public class SceneManagerScript : MonoBehaviour
     public static SceneManagerScript Instance { get; private set; }
 
     public static bool IsGameOver { get; set; } = false;
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private TextMeshProUGUI frontNewBestNbMove;
+    [SerializeField] private TextMeshProUGUI middleNewBestNbMove;
+    [SerializeField] private TextMeshProUGUI backNewBestNbMove;
+    [SerializeField] private string newBestNbOfMovementsVirginText;
+    [SerializeField] private TextMeshProUGUI frontBestNbMove;
+    [SerializeField] private TextMeshProUGUI middleBestNbMove;
+    [SerializeField] private TextMeshProUGUI backBestNbMove;
+    [SerializeField] private string bestNbOfMovementsVirginText;
+    [SerializeField] private TextMeshProUGUI frontNewNbMove;
+    [SerializeField] private TextMeshProUGUI middleNewNbMove;
+    [SerializeField] private TextMeshProUGUI backNewNbMove;
+    [SerializeField] private string newNbOfMovementsVirginText;
+    private int nbOfMovements;
+
+    private void Awake()
     {
-        if (Instance==null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -34,13 +51,19 @@ public class SceneManagerScript : MonoBehaviour
             Debug.LogWarning("Two instances of singletin SceneManagerScript.cs script were created. \nDestroying this instance");
             Destroy(this.gameObject);
         }
+    }
+    void Start()
+    {
         LevelSpecificEvents();
+
+        nbOfMovements = 0;
+        DiceEventSystem.TriggerDiceMove += ListenToDiceMoving;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N) && (IsGameOver))
+        if (Input.GetKeyDown(KeyCode.Escape) && (IsGameOver))
         {
             LoadNextLevel();
         }
@@ -100,6 +123,7 @@ public class SceneManagerScript : MonoBehaviour
         CleanUI();
         print("Success !!! The level is done my friend !");
         levelDoneUI.SetActive(true);
+        EndOfLevelScoreManagement();
         IsGameOver = true;
 
         int levelId = GetCurrentLevelId();
@@ -144,6 +168,11 @@ public class SceneManagerScript : MonoBehaviour
     public IEnumerator LoadMainMenuWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        LoadMainMenu();
+    }
+
+    public void LoadMainMenu()
+    {
         SceneManager.LoadScene(0);
     }
 
@@ -156,5 +185,144 @@ public class SceneManagerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManagerScript.Instance.LoadLevelSelectorScene();
+    }
+
+    private void ListenToDiceMoving()
+    {
+        nbOfMovements++;
+    }
+
+
+    private void EndOfLevelScoreManagement()
+    {
+        int previousBestScore = LoadScore();
+        Debug.Log("Best : " + previousBestScore);
+        Debug.Log("New : " + nbOfMovements);
+        if (previousBestScore > nbOfMovements)
+        {
+            Debug.Log("New Save");
+            SaveScore(nbOfMovements);
+            DisplayNumberOfMovementNewBestScore();
+        }
+        else
+        {
+            Debug.Log("No Save");
+            DisplayNumberOfMovementBestAndNewScore(previousBestScore);
+        }
+    }
+
+
+    private void DisplayNumberOfMovementNewBestScore()
+    {
+        backNewBestNbMove.gameObject.SetActive(true);
+        backNewBestNbMove.gameObject.SetActive(true);
+        backNewBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        backNewNbMove.gameObject.SetActive(false);
+        string textFiller = newBestNbOfMovementsVirginText + " " + nbOfMovements;
+        backNewBestNbMove.text = textFiller;
+        frontNewBestNbMove.text = textFiller;
+        middleNewBestNbMove.text = textFiller;
+    }
+
+    private void DisplayNumberOfMovementBestAndNewScore(int bestNB)
+    {
+        backNewBestNbMove.gameObject.SetActive(false);
+        backNewBestNbMove.gameObject.SetActive(false);
+        backNewBestNbMove.gameObject.SetActive(false);
+        backBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(true);
+        backBestNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        backNewNbMove.gameObject.SetActive(true);
+        string textFillerNew = newNbOfMovementsVirginText + " " + nbOfMovements;
+        backNewNbMove.text = textFillerNew;
+        frontNewNbMove.text = textFillerNew;
+        middleNewNbMove.text = textFillerNew;
+        string textFillerBest = bestNbOfMovementsVirginText + " " + bestNB;
+        backBestNbMove.text = textFillerBest;
+        frontBestNbMove.text = textFillerBest;
+        middleBestNbMove.text = textFillerBest;
+    }
+
+
+    private void SaveScore(int score)
+    {
+        if(! Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Scores");
+        }
+        ScoreData newScore = new ScoreData();
+        newScore.score = score;
+
+        string jsonScore = JsonUtility.ToJson(newScore);
+        File.WriteAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json", jsonScore);
+    }
+
+
+    /*
+    public List<int> LoadAllBestScores(int levelIdMin, int levelIdMax)
+    {
+        List<int> scores = new List<int>();
+        if (!Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            return null;
+        }
+        for (int i = levelIdMin; i<=levelIdMax;i++)
+        {
+            if(!File.Exists(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json"))
+            {
+                scores[i] = -1;
+                return scores;
+            }
+            else
+            {
+                string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json");
+                ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+                scores[i] = bestScore.score;
+            }
+        }
+        return scores;
+    }*/
+
+    public int LoadScore(int levelId)
+    {
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(_firstLevelBuildIndex + levelId);
+        if (scenePath == "")
+        {
+            Debug.LogError("Could not load data for level with levelId = " + levelId);
+            return -1;
+        }
+        string sceneName = scenePath.Split("/")[^1];
+        sceneName = sceneName.Split(".")[0];
+
+        string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + sceneName + ".json");
+        ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+        return bestScore.score;
+    }
+
+    private int LoadScore()
+    {
+        if (!Directory.Exists(Application.dataPath + "/Scores"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Scores");
+        }
+        if (!File.Exists(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json"))
+        {
+            return int.MaxValue;
+        }
+        string scoreJson = File.ReadAllText(Application.dataPath + "/Scores/" + SceneManager.GetActiveScene().name + ".json");
+        ScoreData bestScore = JsonUtility.FromJson<ScoreData>(scoreJson);
+        return bestScore.score;
+    }
+
+    private void OnDestroy()
+    {
+        DiceEventSystem.TriggerDiceMove -= ListenToDiceMoving;
     }
 }

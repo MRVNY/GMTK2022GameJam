@@ -17,6 +17,21 @@ public class LevelSelectMenu : MonoBehaviour
     private int _maxLevelIdAvailable;
     private Vector3Int levelCenterTilePos;
     private int offsetFromCenterToFirst = 3;
+
+    public static LevelSelectMenu Instance;
+    public int MaxLevelIdAvailable => _maxLevelIdAvailable;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Two instances of singletin LevelSelectMenu.cs script were created. \nDestroying this instance");
+            Destroy(this.gameObject);
+        }
+    }
     private void Start()
     {
         levelCenterTilePos = Vector3Int.RoundToInt(current.cellBounds.center);
