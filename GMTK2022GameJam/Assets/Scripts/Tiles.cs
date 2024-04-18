@@ -19,19 +19,15 @@ public class Tiles : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance==null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning("Two instances of singleton Tiles.cs script were created. \nDestroying this instance");
-            Destroy(this.gameObject);
-        }
+        Instance = this;
     }
 
     public void OnEnable()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
         var tileMaps = GetComponentsInChildren<Tilemap>();
         _goal = tileMaps[0];
         Assert.IsTrue(_goal.gameObject.name.Equals("Goal"));

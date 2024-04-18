@@ -56,7 +56,6 @@ public class Dice : MonoBehaviour
 
     protected void Start()
     {
-        
         PointAxe = new Dictionary<GameObject, Vector3>();
         blockCheck = new Dictionary<GameObject, Vector3>();
         downFaces = new List<Face>();
@@ -87,7 +86,10 @@ public class Dice : MonoBehaviour
         blockCheck.Add(E, hori);
         blockCheck.Add(W, -hori);
         
-        // readjust();
+        readjust();
+        // allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
+        // diceFaces = GetComponentsInChildren<Face>();
+        // recenter();
     }
 
     private void OnEnable()
