@@ -52,6 +52,11 @@ public class Dice : MonoBehaviour
     {
         if(enabled)
             Instance = this;
+        else
+        {
+            diceFaces = GetComponentsInChildren<Face>();
+            Darker(true);
+        }
     }
 
     protected void Start()
@@ -100,6 +105,7 @@ public class Dice : MonoBehaviour
             Start();
             // readjust();
         }
+        Darker(false);
     }
 
     private void Update()
@@ -281,6 +287,7 @@ public class Dice : MonoBehaviour
             face.GetComponent<MeshCollider>().enabled = false;
         }
         col.transform.SetParent(transform);
+        col.GetComponent<Dice>().Darker(false);
         readjust();
         isRolling = false;
     }
@@ -308,6 +315,8 @@ public class Dice : MonoBehaviour
         newCube.tilemap = tilemap;
         
         //disable oldCube
+        newCube.Darker(false);
+        oldCube.Darker(true);
         newCube.enabled = true;
         oldCube.enabled = false;
         newCube.cantRollBackDir = -lastFallDir;
@@ -326,6 +335,14 @@ public class Dice : MonoBehaviour
     public void RotateCamera(int direction)
     {
         currentRotation = rotateData[(Array.IndexOf(rotateData, currentRotation)+direction+4)%4];
+    }
+
+    public void Darker(bool Active)
+    {
+        foreach (var face in diceFaces)
+        {
+            face.GetComponent<MeshRenderer>().material.color = Active ? face.color * 0.5f : face.color;
+        }
     }
 }
 
