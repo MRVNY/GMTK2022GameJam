@@ -19,7 +19,7 @@ public class DiceAI : Dice
     }
 
     // Update is called once per frame
-    void Update()
+    async void Update()
     {
         if (!isRolling)
         {
@@ -27,7 +27,7 @@ public class DiceAI : Dice
             startUI.SetActive(true);
             if (tilemap.HasTile(tilemap.WorldToCell(transform.position + 2 * (moveSequence[currentDir].transform.position-transform.position))))
             {
-                StartCoroutine(move(moveSequence[currentDir]));
+                await move(moveSequence[currentDir]);
             }
             else
             {

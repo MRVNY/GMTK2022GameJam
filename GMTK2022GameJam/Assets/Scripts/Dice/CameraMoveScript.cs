@@ -1,78 +1,94 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class CameraMoveScript : MonoBehaviour
 {
     private Camera cam;
+
+    [SerializeField] private CinemachineVirtualCamera Cam_N;
+    [SerializeField] private CinemachineVirtualCamera Cam_E;
+    [SerializeField] private CinemachineVirtualCamera Cam_S;
+    [SerializeField] private CinemachineVirtualCamera Cam_W;
+    
+    private CinemachineFramingTransposer[] transposers;
+    
+    private CinemachineVirtualCamera[] vcams;
+    private CinemachineVirtualCamera currentCam;
         
     public bool diceIsBlocked = false;
     public bool isOrthographic = true;
 
     private Vector3 dicePos, posOrtho, posPersp, targetPos;
-    private Quaternion targetRot;
     private Vector3 velocity = Vector3.zero;
-    private bool transitioning = false;
     
     public static CameraMoveScript Instance { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
-        if (Instance==null)
+        if (Instance == null)
         {
             Instance = this;
         }
-        
+
         cam = GetComponent<Camera>();
         targetPos = transform.position;
-        targetRot = transform.rotation;
+
+        vcams = new CinemachineVirtualCamera[4] { Cam_N, Cam_W, Cam_S, Cam_E };
+        transposers = new CinemachineFramingTransposer[4];
+        foreach (CinemachineVirtualCamera vcam in vcams)
+        {
+            transposers[Array.IndexOf(vcams, vcam)] = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        }
+        currentCam = Cam_N;
+
+        //Set the camera as perfectly above the dice at init
+        foreach (var transposer in transposers)
+        {
+            transposer.m_ScreenX = 0.5f;
+            transposer.m_ScreenY = 0.5f;
+        }
     }
     void Update()
     {
-        if (!diceIsBlocked)
-        {
-            dicePos = Dice.Instance.transform.position;
-            
-            posOrtho = new Vector3(dicePos.x, transform.position.y, dicePos.z);
-            posPersp = posOrtho + Dice.Instance.currentRotation.perspectiveOffset;
-            // posPersp = posOrtho + new Vector3(2, 0, -2);
-            
-            if(Input.GetKeyDown("p") && !transitioning)
-            {
-                isOrthographic = !isOrthographic;
-            }
 
-            else
+        if (Input.GetKeyDown("p"))
+        {
+            foreach (var transposer in transposers)
             {
-                if (isOrthographic) targetPos = posOrtho;
-                else targetPos = posPersp;
+                if (transposer.m_ScreenX == 0.5f)
+                {
+                    transposer.m_ScreenX = 0.3f;
+                    transposer.m_ScreenY = 0.25f;
+                }
+                else
+                {
+                    transposer.m_ScreenX = 0.5f;
+                    transposer.m_ScreenY = 0.5f;
+                }
             }
             
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, 0.2f);
         }
         
-        if(Input.GetKeyDown("a") && !transitioning)
+        if(Input.GetKeyDown("a"))// && !transitioning)
         {
-            //rotate on y axis
-            targetRot = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 90, 0);
             Dice.Instance.RotateCamera(1);
-            transitioning = true;
+            
+            currentCam = vcams[(Array.IndexOf(vcams, currentCam) + 1) % 4];
+            foreach (var vcam in vcams)
+                vcam.Priority = 0;
+            currentCam.Priority = 10;
         }
-        else if(Input.GetKeyDown("d") && !transitioning)
+        else if(Input.GetKeyDown("d"))// && !transitioning)
         {
-            //rotate on y axis
-            targetRot = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 90, 0);
             Dice.Instance.RotateCamera(-1);
-            transitioning = true;
-        }
-
-        if (transitioning)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 0.01f);
-            if (Quaternion.Angle(transform.rotation, targetRot) == 0)
-            {
-                transitioning = false;
-            }
+            
+            currentCam = vcams[(Array.IndexOf(vcams, currentCam) + 4 - 1) % 4];
+            foreach (var vcam in vcams)
+                vcam.Priority = 0;
+            currentCam.Priority = 10;
         }
     }
 }
