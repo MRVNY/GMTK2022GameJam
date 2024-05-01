@@ -1397,6 +1397,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   diceReplica: {fileID: 590727746557310408}
+  tweenDuration: 2.5
+  eulersStartRotAnim: {x: -15, y: 120, z: -15}
+  easeType: 24
 --- !u!1 &6469865773046394761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,7 +1843,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 3
   m_Depth: 0
   m_CullingMask:

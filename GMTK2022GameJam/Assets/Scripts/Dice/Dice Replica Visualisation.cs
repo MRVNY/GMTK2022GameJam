@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,15 @@ public class DiceReplicaVisualisation : MonoBehaviour
 {
     [SerializeField]
     private GameObject diceReplica;
+
+    [SerializeField]
+    private float tweenDuration;
+
+    [SerializeField]
+    private Vector3 eulersStartRotAnim;
+
+    [SerializeField]
+    private Ease easeType;
 
     private Transform diceReplicaTr;
     private Dice _playerDice;
@@ -21,6 +31,9 @@ public class DiceReplicaVisualisation : MonoBehaviour
         {
             diceReplicaTr.GetChild(i).GetComponent<MeshRenderer>().material = _playerDice.transform.GetChild(i).GetComponent<MeshRenderer>().material;
         }
+
+        TweenParams tParms = new TweenParams().SetEase(easeType).SetUpdate(true);
+        var myTween = diceReplicaTr.DORotate(eulersStartRotAnim, tweenDuration).SetAs(tParms).From();
 
     }
 }

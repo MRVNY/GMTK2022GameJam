@@ -40,7 +40,11 @@ public class Dice : MonoBehaviour
     public AudioClip moveSound;
     
     BoxCollider[] allCubes;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    private bool enableFaceVisibleFromAllSides;
+    [SerializeField]
+    private Mesh cubeMesh;
 
     protected Vector3 mouseStart;
     protected float mouseClick;
@@ -48,7 +52,10 @@ public class Dice : MonoBehaviour
 
     protected void Awake()
     {
-        Instance = this;
+        if(enabled)
+        {
+            Instance = this;
+        }
     }
     protected void Start()
     {
@@ -83,6 +90,11 @@ public class Dice : MonoBehaviour
         blockCheck.Add(W, -hori);
         
         readjust();
+
+        if(enableFaceVisibleFromAllSides)
+        {
+            UpdateDiceFacesToCube();
+        }
     }
 
     private void OnEnable()
@@ -312,6 +324,25 @@ public class Dice : MonoBehaviour
     public void RotateCamera(int direction)
     {
         currentRotation = rotateData[(Array.IndexOf(rotateData, currentRotation)+direction+4)%4];
+    }
+
+
+    private void UpdateDiceFacesToCube()
+    {
+        for(int i = 0; i<transform.childCount;i++)
+        {
+            Transform child = transform.GetChild(i);
+            print(child.gameObject.name);
+
+            Face face = child.GetComponent<Face>();
+            face.transform.localScale = new Vector3(1.278951f, 0.06f, 1.278951f);
+
+            MeshFilter meshFilter = child.GetComponent<MeshFilter>();
+            meshFilter.mesh = cubeMesh;
+
+            MeshCollider meshCollider = child.GetComponent<MeshCollider>();
+            meshCollider.sharedMesh = cubeMesh;
+        }
     }
 }
 

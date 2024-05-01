@@ -75,7 +75,7 @@ public class Tiles : MonoBehaviour
         Vector3 offset = new Vector3(0.7f, 0, 0.7f);
         if (downFace != null)
         {
-            //gerer le cas o� on passe d'une non couleur a une mauvaise couleur
+            //gerer le cas ou on passe d'une non couleur a une mauvaise couleur
             var tilePos = _current.WorldToCell(downFace.transform.position);
             var previousColor = _current.GetColor(tilePos);
             var _goalColor = _goal.GetColor(tilePos);

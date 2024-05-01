@@ -1154,6 +1154,8 @@ MonoBehaviour:
   StarsEffect: {fileID: 4977614735912570434, guid: 825c39b46ca8b40d780240d7c9b12b57, type: 3}
   SmokeEffect: {fileID: 1642322455942316, guid: fdefb6da92c7449ebb5e39c21cbbd2b1, type: 3}
   moveSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
+  enableFaceVisibleFromAllSides: 0
+  cubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &8410874107882907860
 GameObject:
   m_ObjectHideFlags: 0
