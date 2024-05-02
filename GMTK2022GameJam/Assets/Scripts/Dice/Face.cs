@@ -21,7 +21,7 @@ public class Face : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider col)
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag(gameObject.tag)) 
         {
