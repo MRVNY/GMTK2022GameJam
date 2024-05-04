@@ -43,7 +43,6 @@ public class Dice : MonoBehaviour
     public AudioClip moveSound;
     
     public BoxCollider[] allCubes;
-    // Start is called before the first frame update
 
     protected Vector3 mouseStart;
     protected float mouseClick;
@@ -93,9 +92,6 @@ public class Dice : MonoBehaviour
         blockCheck.Add(W, -hori);
         
         readjust();
-        // allCubes = transform.parent.GetComponentsInChildren<BoxCollider>();
-        // diceFaces = GetComponentsInChildren<Face>();
-        // recenter();
     }
 
     private void OnEnable()
@@ -136,11 +132,8 @@ public class Dice : MonoBehaviour
                 }
 
                 if (cantRollBackDir != blockCheck[targetDir])
-                {
                     MoveOrBlock();
-                }
             }
-            dir = Vector3.zero;
         }
         
         //Keyboard controls
@@ -153,15 +146,12 @@ public class Dice : MonoBehaviour
             else targetDir = null;
             
             if(targetDir!=null && cantRollBackDir != blockCheck[targetDir])
-            {
                 MoveOrBlock();
-            }
             
             // Separate
-            if (Input.GetKeyDown("b") && allCubes.Length > 1 && Math.Abs(allCubes[0].transform.position.y - allCubes[1].transform.position.y) < 0.1f)
-            {
+            if (Input.GetKeyDown("b") && allCubes.Length > 1 && 
+                Math.Abs(allCubes[0].transform.position.y - allCubes[1].transform.position.y) < 0.1f)
                 separate();
-            }
         }
     }
 
@@ -183,10 +173,8 @@ public class Dice : MonoBehaviour
             Vector3Int tipToe = tilemap.WorldToCell(targetDir.transform.position - blockCheck[targetDir] * (height * 0.25f));
             Vector3Int nearArrival = tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height * 0.25f));
             Vector3Int farArrival = tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height * 0.75f));
-
             canMove = tilemap.HasTile(tipToe) && (tilemap.HasTile(nearArrival) || tilemap.HasTile(farArrival));
         }
-        
         rolling = canMove ? move(targetDir) : block(targetDir);
     }
 
@@ -231,7 +219,6 @@ public class Dice : MonoBehaviour
 
     private bool InPause()
     {
-        //print(!PauseManager.Instance || PauseManager.Instance.IsGamePaused);
         return !PauseManager.Instance || PauseManager.Instance.IsGamePaused;
     }
     protected async Task block(GameObject point)
