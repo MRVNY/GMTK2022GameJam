@@ -152,7 +152,7 @@ public class Tiles : MonoBehaviour
     public IEnumerator DropDice(Transform dice)
     {
         var tilePos = _current.WorldToCell(new Vector3(dice.position.x, 0, dice.position.z));
-        if(_current.GetTile(tilePos) == null)
+        if(!_current.HasTile(tilePos))
         {
             Rigidbody rb = dice.GetComponent<Rigidbody>();
             rb.useGravity = true;

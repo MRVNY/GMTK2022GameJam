@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cinemachine.Utility;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Dice : MonoBehaviour
@@ -133,11 +134,11 @@ public class Dice : MonoBehaviour
                     if(dir.y < 0) targetDir = currentRotation.controlScheme[DOWN];
                     else targetDir = currentRotation.controlScheme[UP];
                 }
-                if(cantRollBackDir != blockCheck[targetDir])
-                    rolling = 
-                    tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
-                        ? move(targetDir)
-                        : block(targetDir);
+
+                if (cantRollBackDir != blockCheck[targetDir])
+                {
+                    MoveOrBlock();
+                }
             }
             dir = Vector3.zero;
         }
@@ -152,10 +153,9 @@ public class Dice : MonoBehaviour
             else targetDir = null;
             
             if(targetDir!=null && cantRollBackDir != blockCheck[targetDir])
-                rolling =
-                    tilemap.HasTile(tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height - 0.5f)))
-                        ? move(targetDir)
-                        : block(targetDir);
+            {
+                MoveOrBlock();
+            }
             
             // Separate
             if (Input.GetKeyDown("b") && allCubes.Length > 1 && Math.Abs(allCubes[0].transform.position.y - allCubes[1].transform.position.y) < 0.1f)
@@ -163,6 +163,31 @@ public class Dice : MonoBehaviour
                 separate();
             }
         }
+    }
+
+    private void MoveOrBlock()
+    {
+        bool canMove = false;
+        
+        //Two dice Parallel rolling
+        if (downFaces.Count == 2 &&
+            (downFaces[0].transform.position - downFaces[1].transform.position).normalized.Abs() !=
+            blockCheck[targetDir].normalized.Abs())
+        {
+            Vector3Int cube1Arrival = tilemap.WorldToCell(downFaces[0].transform.position + blockCheck[targetDir] * height);
+            Vector3Int cube2Arrival = tilemap.WorldToCell(downFaces[1].transform.position + blockCheck[targetDir] * height);
+            canMove = tilemap.HasTile(cube1Arrival) && tilemap.HasTile(cube2Arrival);
+        }
+        else
+        {
+            Vector3Int tipToe = tilemap.WorldToCell(targetDir.transform.position - blockCheck[targetDir] * (height * 0.25f));
+            Vector3Int nearArrival = tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height * 0.25f));
+            Vector3Int farArrival = tilemap.WorldToCell(targetDir.transform.position + blockCheck[targetDir] * (height * 0.75f));
+
+            canMove = tilemap.HasTile(tipToe) && (tilemap.HasTile(nearArrival) || tilemap.HasTile(farArrival));
+        }
+        
+        rolling = canMove ? move(targetDir) : block(targetDir);
     }
 
     protected async Task move(GameObject point)
