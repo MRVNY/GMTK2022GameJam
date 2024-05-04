@@ -41,7 +41,7 @@ public class Dice : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip moveSound;
     
-    BoxCollider[] allCubes;
+    public BoxCollider[] allCubes;
     // Start is called before the first frame update
 
     protected Vector3 mouseStart;
@@ -320,6 +320,10 @@ public class Dice : MonoBehaviour
         newCube.enabled = true;
         oldCube.enabled = false;
         newCube.cantRollBackDir = -lastFallDir;
+
+        StartCoroutine(Tiles.Instance.DropDice(oldCube.transform));
+        
+        CameraMoveScript.Instance.NewFollow(newCube.transform);
         
         if(newCube == this) readjust();
     }

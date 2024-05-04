@@ -83,4 +83,12 @@ public class CameraMoveScript : MonoBehaviour
             currentCam.Priority = 10;
         }
     }
+    
+    public void NewFollow(Transform target)
+    {
+        foreach (CinemachineVirtualCamera vcam in vcams)
+        {
+            vcam.Follow = target;
+        }
+    }
 }

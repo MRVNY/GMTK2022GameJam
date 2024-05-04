@@ -87,7 +87,6 @@ public class Tiles : MonoBehaviour
                 return;
             }
 
-
             _current.SetColor(tilePos, downFace.color);
             if (previousColor!=Color.white && !ColorEquals( previousColor, downFace.color)) // has changed 
             {
@@ -148,6 +147,20 @@ public class Tiles : MonoBehaviour
         
         yield return new WaitForSeconds(1); 
         Destroy(effect);
+    }
+    
+    public IEnumerator DropDice(Transform dice)
+    {
+        var tilePos = _current.WorldToCell(new Vector3(dice.position.x, 0, dice.position.z));
+        if(_current.GetTile(tilePos) == null)
+        {
+            Rigidbody rb = dice.GetComponent<Rigidbody>();
+            rb.useGravity = true;
+            rb.isKinematic = false;
+            dice.GetComponent<Collider>().enabled = false;
+        }
+        
+        yield return new WaitForSeconds(3);
     }
 
 
